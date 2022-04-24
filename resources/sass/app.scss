@@ -1,0 +1,76 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+@import '~admin-lte/dist/css/adminlte.css';
+
+// Font Awesome
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+
+// sweet alert
+@import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss'
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.blue {color: $blue;}
+.indigo {color: $indigo;}
+.purple {color: $purple;}
+.pink {color: $pink;}
+.red {color: $red;}
+.orange {color: $orange;}
+.yellow {color: $yellow;}
+.green {color: $green;}
+.teal {color: $teal;}
+.cyan {color: $cyan;}
+
+
+// .content-header{
+//   padding: 10px 0.5rem !important;
+// }
+/*Custom css*/
+.brand-link .brand-image {
+    max-height: 40px;
+    background-color: white;
+}
+.addr_panel {
+    background-color: aliceblue;
+    padding-top: 10px;
+}
+.section-heading {
+    font-size: 14px;
+    font-weight: bolder;
+    text-align: center;
+    background-color: antiquewhite;
+}
+.provider_formbox {
+    background-color: aliceblue;
+    display: grid;
+    border-bottom: 1px solid #CCC;
+    margin: 10px 0 10px 0;
+    padding: 10px;
+}
+.quickupdate_headerbox{
+    background-color: lightblue;
+    padding-top: 10px;
+}
+.info-box{
+    height: 60px !important;
+    min-height: 60px !important;
+}
+.info-box .info-box-content{
+    line-height: 1.5 !important;
+}
+.navbar{
+    background-color: #9acbf3 !important
+}
