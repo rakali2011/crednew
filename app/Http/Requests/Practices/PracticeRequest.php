@@ -38,6 +38,8 @@ class PracticeRequest extends FormRequest
     {
         return [
             'practice_name' => 'required|string|max:191',
+            'group_npi' => 'required|digits:10',
+            'practice_tax_id' => 'required|digits:9',
             'practice_code' => 'max:10',
             'client_name' => 'required|string|max:64',
             'group_npi' => 'required|digits:10',
@@ -54,6 +56,8 @@ class PracticeRequest extends FormRequest
     {
         return [
             'practice_name' => 'required|string|max:191',
+            'group_npi' => 'required|digits:10',
+            'practice_tax_id' => 'required|digits:9',
             'practice_code' => 'max:10',
             'client_name' => 'required|string|max:64',
             'group_npi' => 'required|digits:10',
