@@ -4,6 +4,7 @@
 /storage/*.key
 /storage/documents/provider/*
 /storage/documents/practice/*
+/storage/documents/edi/*
 /vendor
 .env
 .env.backup
