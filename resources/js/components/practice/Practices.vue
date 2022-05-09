@@ -19,43 +19,35 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
-                <table class="table table-hover table table-bordered table-striped dataTable dtr-inline" id="example1">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Practice Name</th>
-                      <th>Code</th>
-                      <th>Client Name</th>
-                      <th>Group NPI</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                     <tr v-for="practice in practices.data" :key="practice.id">
-
-                      <td>{{practice.id}}</td>
-                      <td>{{practice.practice_name}}</td>
-                      <td>{{practice.practice_code}}</td>
-                      <td>{{practice.client_name}}</td>
-                      <td>{{practice.group_npi}}</td>
-                      <!-- <td><img v-bind:src="'/' + product.photo" width="100" alt="product"></td> -->
-                      <td>
-                        
-                        <a href="#" @click="editModal(practice)">
-                            <i class="fa fa-edit blue"></i>
-                        </a>
-                        
-                        <a href="#" @click="deletePractice(practice.id)">
-                            <i class="fa fa-trash red"></i>
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <vue-good-table
+                  :columns="columns"
+                  :rows="rows"
+                  :pagination-options="{
+                    enabled: true
+                  }"
+                  :search-options="{
+                        enabled: true
+                  }">
+                  <template slot="table-row" slot-scope="props">
+                    <span v-if="props.column.field == 'action'">
+                      
+                      <a @click="profileModal(props.row)" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                      <a @click="editModal(props.row)" href="#"><i class="fa fa-edit blue"></i></a>
+                      <a @click="docModal(props.row)" href="#"><i class="nav-icon fas fa-file"></i></a>
+                      
+                      <a href="#" @click="deletePractice(props.row.id)">
+                        <i class="fa fa-trash red"></i>
+                      </a>
+                    </span>
+                    <span v-else>
+                      {{props.formattedRow[props.column.field]}}
+                    </span>
+                  </template>
+                </vue-good-table>
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                  <pagination :data="practices" @pagination-change-page="getResults"></pagination>
+                  
               </div>
             </div>
             <!-- /.card -->
@@ -63,6 +55,63 @@
         </div>
 
         <!-- Modal -->
+        <div class="modal fade" id="docNew" tabindex="-1" role="dialog" aria-labelledby="docNew" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" v-show="!editmode">Add New Document</h5>
+                        <h5 class="modal-title" v-show="editmode">Edit Document</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form @submit.prevent="editmode ? updateDocument() : createDocument()">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group input-group-sm">
+                                        <span class="input-group input-group-sm">Select Document Type</span>                                        
+                                        <multiselect v-model="docform.selected_doctype" :multiple="false" :options="doctypes.map(prac => prac.id)" :custom-label="opt => doctypes.find(x => x.id == opt).type" placeholder="Select Doc Type">
+                                        <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length >3 &amp;&amp; !isOpen">{{ values.length }} types selected</span></template>
+                                        </multiselect>
+                                        <span v-if="errors && errors.document_type_id" class=" text-danger">&nbsp;&nbsp; Document type is reqiured</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group input-group-sm">
+                                        <span class="input-group input-group-sm">Upload</span>
+                                        <input type="file" @change="onChange" name="file_name" class="">
+                                        <span v-if="errors && errors.file_name" class=" text-danger">&nbsp;&nbsp; Document is reqiured</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group input-group-sm">
+                                        <span class="input-group input-group-sm">Issue Date</span>
+                                        <input v-model="docform.issue_date" type="date" name="issue_date"
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('issue_date') }">
+                                        <has-error :form="form" field="issue_date"></has-error>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group input-group-sm">
+                                        <span class="input-group input-group-sm">Expiry Date</span>
+                                        <input v-model="docform.expiry_date" type="date" name="expiry_date"
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('expiry_date') }">
+                                        <has-error :form="form" field="expiry_date"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button v-show="editmode" type="submit" class="btn btn-success">Update</button>
+                                <button v-show="!editmode" type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <profile :listdata="profiledata"/>
         <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNew" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -80,7 +129,7 @@
                     <div class="modal-body">
 
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-6">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Practice Name</span>
             <input v-model="form.practice_name" type="text" name="practice_name"
@@ -88,7 +137,7 @@
             <has-error :form="form" field="practice_name"></has-error>
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Practice Code</span>
             <input v-model="form.practice_code" type="text" name="practice_code"
@@ -96,7 +145,7 @@
             <has-error :form="form" field="practice_code"></has-error>
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Client Name</span>
             <input v-model="form.client_name" type="text" name="client_name"
@@ -104,10 +153,8 @@
             <has-error :form="form" field="client_name"></has-error>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Group NPI</span>
             <input v-model="form.group_npi" type="text" name="group_npi"
@@ -115,7 +162,7 @@
             <has-error :form="form" field="group_npi"></has-error>
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Practice Tax ID</span>
             <input v-model="form.practice_tax_id" type="text" name="practice_tax_id"
@@ -123,7 +170,7 @@
             <has-error :form="form" field="practice_tax_id"></has-error>
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Speciality</span>
             <input v-model="form.speciality" type="text" name="speciality"
@@ -132,9 +179,7 @@
         </div>
     </div>
     
-</div>
-<div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Taxnomy</span>
             <input v-model="form.taxnomy" type="text" name="taxnomy"
@@ -142,7 +187,7 @@
             <has-error :form="form" field="taxnomy"></has-error>
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">CLIA</span>
             <input v-model="form.clia" type="text" name="clia"
@@ -150,7 +195,7 @@
             <has-error :form="form" field="clia"></has-error>
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">CLIA Expiry</span>
             <input v-model="form.clia_expiry" type="date" name="clia_expiry"
@@ -158,7 +203,7 @@
             <has-error :form="form" field="clia_expiry"></has-error>
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">DBA Name</span>
             <input v-model="form.dba_name" type="text" name="dba_name"
@@ -166,7 +211,8 @@
             <has-error :form="form" field="dba_name"></has-error>
         </div>
     </div>
-    <div class="col-sm-4">
+    
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Practice Classification</span>
             <select v-model="form.prac_classification" name="prac_classification"  class="form-control">
@@ -175,6 +221,30 @@
                 <option value="C.Corp">C.Corp</option>
                 <option value="Partnership">Partnership</option>
             </select>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Grp Medicaid ID</span>
+            <input v-model="form.grp_madicaid_id" type="text" name="grp_madicaid_id"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('grp_madicaid_id') }">
+            <has-error :form="form" field="grp_madicaid_id"></has-error>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Group MRC ID</span>
+            <input v-model="form.grp_mrc_id" type="text" name="grp_mrc_id"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('grp_mrc_id') }">
+            <has-error :form="form" field="grp_mrc_id"></has-error>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Rail Road group</span>
+            <input v-model="form.rail_road_group" type="text" name="rail_road_group"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('rail_road_group') }">
+            <has-error :form="form" field="rail_road_group"></has-error>
         </div>
     </div>
     
@@ -391,16 +461,62 @@
 </template>
 
 <script>
-    import VueTagsInput from '@johmun/vue-tags-input';
-
+    import { VueGoodTable } from 'vue-good-table';
+    import Multiselect from 'vue-multiselect'
+    import profile from "../../components/practice/Profile";
     export default {
       components: {
-          VueTagsInput,
+          VueGoodTable,profile,Multiselect
         },
         data () {
             return {
+                columns: [
+                            {
+                              label: 'Practice Name',
+                              field: 'practice_name',
+                            },
+                            {
+                              label: 'Client Name',
+                              field: 'client_name',
+                            },
+                            {
+                              label: 'Group NPI',
+                              field: 'group_npi',
+                            },
+                            {
+                              label: 'Tax ID',
+                              field: 'practice_tax_id',
+                            },
+                            {
+                              label: 'Classification',
+                              field: 'prac_classification',
+                            },
+                            {
+                              label: 'Created On',
+                              field: 'created_at',
+                              type: 'date',
+                              dateInputFormat: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSSSSXXX',
+
+                              dateOutputFormat: 'MMM do yy',
+                            },
+                            {
+                              label: 'Action',
+                              field: 'action',
+                            },
+                          ],
+                rows: [],
                 editmode: false,
                 practices : {},
+                doctypes: [],
+                errors: {},
+                docform: new Form({
+                    id : '',
+                    file_name : '',
+                    selected_practice: [],
+                    selected_doctype: [],
+                    issue_date:'',
+                    expiry_date:'',
+                }),
                 form: new Form({
                     id : '',
                     practice_name : '',
@@ -414,6 +530,9 @@
                     clia_expiry: '',
                     dba_name:'',
                     prac_classification:'',
+                    grp_madicaid_id : '',
+                    grp_mrc_id : '',
+                    rail_road_group : '',
                     service_address: '',
                     service_city: '',
                     service_state: '',
@@ -434,25 +553,44 @@
                     contact1_mobile: '',
                     owner_name: '',
                 }),
+                profiledata:'',
                 autocompleteItems: [],
             }
         },
         methods: {
-
-          getResults(page = 1) {
-
-              this.$Progress.start();
+            onChange(e){
+            console.log("slected file",e.target.files[0]);
+              this.docform.file_name = e.target.files[0];
+          },
+          profileModal(row){
+              $('#infoNew').modal('show');
+              this.getProProfile(row);
+            },
+            getProProfile(row){
+            this.profiledata=row;
+            },
+          docModal(row){
+              this.editmode = false;
+              this.docform.reset();
+              this.docform.selected_practice=row.id;
+              $('#docNew').modal('show');
               
-              axios.get('api/practice?page=' + page).then(({ data }) => (this.practices = data.data));
-
-              this.$Progress.finish();
           },
           loadPractices(){
+                axios.get('api/practice').then(function (res) {
+                    this.rows = res.data.data;
+                }.bind(this));
 
             // if(this.$gate.isAdmin()){
-              axios.get("api/practice").then(({ data }) => (this.practices = data.data));
+            //  axios.get("api/practice").then(({ data }) => (this.practices = data.data));
             // }
           },
+          loadDocTypes: function () {
+            axios.get('api/document/doctypes').then(function (res) {
+            
+                this.doctypes = res.data.data;
+            }.bind(this));
+            },
           
           editModal(practice){
               this.editmode = true;
@@ -464,6 +602,46 @@
               this.editmode = false;
               this.form.reset();
               $('#addNew').modal('show');
+          },
+          createDocument(){
+              this.errors = {};
+              this.$Progress.start();
+              let fb = new FormData();
+              fb.append('file_name',this.docform.file_name);
+              fb.append('practice_id',this.docform.selected_practice);
+              fb.append('document_type_id',this.docform.selected_doctype);
+              fb.append('issue_date',this.docform.issue_date);
+              fb.append('expiry_date',this.docform.expiry_date);
+              axios.post('api/practicedoc',fb)
+              
+              .then((data)=>{
+                if(data.data.success){
+                  $('#docNew').modal('hide');
+
+                  Toast.fire({
+                        icon: 'success',
+                        title: data.message
+                    });
+                  this.$Progress.finish();
+                  this.forceRerender();
+                } else {
+                  Toast.fire({
+                      icon: 'error',
+                      title: 'Some error occured! Please try again1'
+                  });
+
+                  this.$Progress.failed();
+                }
+              })
+              .catch(error=>{
+                    if (error.response.status === 422) {
+                        this.errors = error.response.data.errors || {};
+                      }
+                  Toast.fire({
+                      icon: 'error',
+                      title: 'Some error occured! Please try again2!'
+                  });
+              })
           },
           createPractice(){
               this.$Progress.start();
@@ -552,7 +730,7 @@
             this.$Progress.start();
 
             this.loadPractices();
-            
+            this.loadDocTypes();
             this.$Progress.finish();
         },
         filters: {

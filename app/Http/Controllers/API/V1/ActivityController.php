@@ -42,22 +42,36 @@ class ActivityController extends BaseController
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'provider_id' => '',
-            'payer' => '',
-            'action' => 'required',
+            'selected_practices' => '',
+            'provider_id' => 'required',
+            'payer' => 'required',
+            'enrollment_credentialing' => 'required',
+            'era_eft_edi_portal' => '',
+            'initiated_followup' => 'required',
+            'initiated_date' => '',
+            'followup_date' => '',
+            'reference_no' => 'required',
             'description' => 'required|min:3',
         ]);
 //dd($validatedData);
         $activity = new Activity;
 
         $provider = \App\Models\Provider::find($validatedData['provider_id']);
+        $practice = \App\Models\Practice::find($validatedData['selected_practices']);
 
+        $activity->practice_name = $practice ? $practice->practice_name : "N/A";
         $activity->provider_name = $provider ? $provider->full_name : "N/A";
         $activity->payer = $validatedData['payer']?$validatedData['payer']:"N/A" ;
+        $activity->enrollment_credentialing = $validatedData['enrollment_credentialing'] ;
+        $activity->era_eft_edi_portal = $validatedData['era_eft_edi_portal'] ;
+        $activity->initiated_followup = $validatedData['initiated_followup'] ;
+        $activity->initiated_date = $validatedData['initiated_date'] ;
+        $activity->followup_date = $validatedData['followup_date'] ;
+        $activity->reference_no = $validatedData['reference_no'] ;
         $activity->user = auth()->user()->name;
         $activity->user_id = auth()->user()->id;
         $activity->email = auth()->user()->email;
-        $activity->action = $validatedData['action'];
+//        $activity->action = $validatedData['action'];
         $activity->description = $validatedData['description'];
 
         $activity->save();

@@ -66,7 +66,17 @@
               <li class="nav-item">
                   <router-link to="/report/productivity" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>User Productivity</p>
+                      <p>Activity Report</p>
+                  </router-link>
+              </li>
+              <li class="nav-item">
+<!--                  <a href="https://providerscredentialing.com/quickupdate" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Quick Update</p>
+                  </a>-->
+                  <router-link to="/report/export" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Export Status Report</p>
                   </router-link>
               </li>
           </ul>
@@ -83,7 +93,7 @@
         <router-link to="/activity" class="nav-link">
           <i class="nav-icon fas fa-clipboard orange"></i>
           <p>
-            Log Daily Activity
+            Log Activity
           </p>
         </router-link>
       </li>

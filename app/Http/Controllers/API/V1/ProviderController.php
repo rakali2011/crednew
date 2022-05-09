@@ -202,7 +202,10 @@ class ProviderController extends BaseController
         return $this->sendResponse($provider, 'Provider Information has been updated');
     }
     public function allProvidersStatus(Request $request){
-        $status_detail = array(
+        
+        $providers = $this->provider->get();
+        foreach ($providers as $pro){
+            $status_detail = array(
                     'participating' => 0,
                     'non-participating' => 0,
                     'in-process' => 0,
@@ -214,8 +217,6 @@ class ProviderController extends BaseController
                     'approved' => 0,
                     'new' => 0,
                 );
-        $providers = $this->provider->get();
-        foreach ($providers as $pro){
             $apps = $pro->payers()->get();
             foreach ($apps as $payer) {
                     $status_detail[$payer->pivot->status] = $status_detail[$payer->pivot->status] + 1;
@@ -233,6 +234,7 @@ class ProviderController extends BaseController
             $pro->not_eligible=$status_detail['not-eligible'];
             $pro->panel_closed=$status_detail['panel-closed'];
             $pro->approved=$status_detail['approved'];
+            $pro->new=$status_detail['new'];
             
         }
 //        dd($apps->count());
@@ -251,5 +253,19 @@ class ProviderController extends BaseController
         $provider = $this->provider->findOrFail($id);
         $provider->delete();
         return $this->sendResponse($provider, 'Provider has been Deleted');
+    }
+    public function getProviderPayer($id) {
+        $payers=array();
+        $provider = Provider::with(['payers.remarks' => function($q) use ($id) {
+                        $q->where('provider_id', '=', $id)->orderBy('created_at', 'desc');
+                    }])
+                ->findOrFail($id);
+        
+        if($provider){
+            $payers = $provider->payers()->get(['payers.id','payers.name']);
+        }
+        $provider->dob = $provider->dob ? date('m/d/Y', strtotime($provider->dob)):'';
+        
+        return compact('payers','provider');
     }
 }

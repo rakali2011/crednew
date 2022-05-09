@@ -16,4 +16,9 @@ class Payer extends Model
      * @var array
      */
     protected $guarded = ['id'];
+    
+    public function remarks()
+    {
+        return $this->hasMany('App\Models\Remark');
+    }
 }

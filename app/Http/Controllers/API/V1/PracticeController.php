@@ -164,4 +164,15 @@ class PracticeController extends BaseController
         $practice->delete();
         return $this->sendResponse($practice, 'Practice has been Deleted');
     }
+    public function getPracticeProvider($id) {
+        $providers=array();
+//        $practice = $this->practice->findOrFail($id);
+        $practice = Practice::findOrFail($id);
+        
+        if($practice){
+            $providers = $practice->providers()->get(['providers.id','full_name','individual_npi']);
+        }
+        
+        return compact('providers','practice');
+    }
 }

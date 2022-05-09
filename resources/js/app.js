@@ -120,6 +120,8 @@ import VueApexCharts from 'vue-apexcharts'
 Vue.use(VueApexCharts)
 
 Vue.component('apexchart', VueApexCharts)
+import VueExcelXlsx from "vue-excel-xlsx";
+Vue.use(VueExcelXlsx);
 //vue.components('VuejsDatatableFactory');
 //Vue.component('datatable-component', require('./components/DatatableComponent.vue').default);
 

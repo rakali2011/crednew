@@ -33,6 +33,7 @@
         "sweetalert2": "^9.17.2",
         "vform": "^1.0.1",
         "vue-apexcharts": "^1.6.2",
+        "vue-excel-xlsx": "^1.2.2",
         "vue-good-table": "^2.21.11",
         "vue-moment": "^4.1.0",
         "vue-multiselect": "^2.1.6",

@@ -683,7 +683,7 @@ import profile from "../../components/provider/Profile";
               
               .then((data)=>{
                 if(data.data.success){
-                  $('#addNew').modal('hide');
+                  $('#docNew').modal('hide');
 
                   Toast.fire({
                         icon: 'success',

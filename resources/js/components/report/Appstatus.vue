@@ -70,19 +70,19 @@ import { VueGoodTable } from 'vue-good-table';
         },
         {
           label: 'Non-Participating',
-          field: 'nonparticipating',
+          field: 'non_participating',
         },
         {
           label: 'In-Process',
-          field: 'inporcess',
+          field: 'in_process',
         },
         {
           label: 'Pending PRG',
-          field: 'pending',
+          field: 'pending_prg',
         },
         {
           label: 'Pending Provider',
-          field: 'pen_provider',
+          field: 'pending_provider',
         },
         {
           label: 'Rejected',

@@ -9,7 +9,15 @@
               <div class="card-header">
                 <h3 class="card-title">User Productivity Report</h3>
                 <div class="card-tools">
-                 
+                 <vue-excel-xlsx
+                    :data="rows"
+                    :columns="columns"
+                    :file-name="'filename'"
+                    :file-type="'xlsx'"
+                    :sheet-name="'sheetname'"
+                    >
+                    Export to Excel
+                 </vue-excel-xlsx>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -49,35 +57,51 @@ import { VueGoodTable } from 'vue-good-table';
             return {
       columns: [
         {
-          label: 'Name',
-          field: 'user',
+          label: 'Group Name',
+          field: 'practice_name',
         },
         {
-          label: 'Email',
-          field: 'email',
-        },
-        {
-          label: 'Action',
-          field: 'action',
-        },
-        {
-          label: 'Provider',
+          label: 'Provider Name',
           field: 'provider_name',
         },
         {
-          label: 'Application',
+          label: 'Insurance',
           field: 'payer',
         },
+        {
+          label: 'Enrollment or Credentialing',
+          field: 'enrollment_credentialing',
+        },
+        {
+          label: 'ERA/EFT/EDI Portal',
+          field: 'era_eft_edi_portal',
+        },
+        {
+          label: 'Initiated/Follow up',
+          field: 'initiated_followup',
+        },
+        {
+          label: 'Initiated Date',
+          field: 'initiated_date',
+        },
+        {
+          label: 'Follow up Date',
+          field: 'followup_date',
+        },
+        {
+          label: 'Comments',
+          field: 'description',
+        },
+        {
+          label: 'Reference#',
+          field: 'reference_no',
+        },        
         {
           label: 'Date',
           field: 'created_at',
             type: 'date',
             dateInputFormat: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSSSSXXX',
             dateOutputFormat: 'MMM do yy',
-        },
-        {
-          label: 'Remarks/Description',
-          field: 'description',
         },
       ],
       rows: [],

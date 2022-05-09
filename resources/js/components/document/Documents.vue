@@ -35,6 +35,9 @@
                       <a @click="showDocument(props.row)" href="#"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                       <a href="#"><i class="fa fa-trash red"></i></a>
                     </span>
+                    <span v-else-if="props.column.field == 'document_type'">
+                      {{props.formattedRow[props.column.field].type}}
+                    </span>
                     <span v-else>
                       {{props.formattedRow[props.column.field]}}
                     </span>
@@ -138,6 +141,10 @@ import { VueGoodTable } from 'vue-good-table';
         data () {
             return {
                     columns: [
+                        {
+                            label: 'Document Type',
+                            field: 'document_type',
+                        },
                         {
                             label: 'Document',
                             field: 'name',

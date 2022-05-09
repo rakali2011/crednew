@@ -25,7 +25,9 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group input-group input-group-sm">
-                                        <span class="input-group input-group-sm">Select Provider</span>
+                                        <span class="input-group input-group-sm">Select Provider
+                                            <span v-if="errors && errors.provider_id" class=" text-danger">&nbsp;&nbsp; {{ errors.provider_id[0] }}</span>
+                                        </span>
                                         <select class="form-control" v-model="form.provider_id" @change="onChangeProvider($event)">
                                             <option :value="provider.id" v-for="(provider) in providers" :key="provider.id">{{provider.full_name}}</option>
                                         </select>
@@ -37,12 +39,74 @@
                                 
                                 <div class="col-sm-6">
                                     <div class="form-group input-group input-group-sm">
-                                        <span class="input-group input-group-sm">Select Application</span>
+                                        <span class="input-group input-group-sm">Select Application
+                                            <span v-if="errors && errors.payer" class=" text-danger">&nbsp;&nbsp; {{ errors.payer[0] }}</span>
+                                        </span>
                                         <select class="form-control" v-model="form.payer" >
                                             <option :value="payer.name" v-for="(payer) in payers" :key="payer.id">{{payer.name}}</option>
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group input-group-sm">
+                                        <span class="input-group input-group-sm">Enrollment/Credentialing
+                                            <span v-if="errors && errors.enrollment_credentialing" class=" text-danger">&nbsp;&nbsp; {{ errors.enrollment_credentialing[0] }}</span>
+                                        </span>
+                                        <select class="form-control" v-model="form.enrollment_credentialing" >
+                                            <option value="Enrollment" >Enrollment</option>
+                                            <option value="Credentialing" >Credentialing</option>
+                                            <option value="Enrollment/Credentialing" >Enrollment/Credentialing</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group input-group-sm">
+                                        <span class="input-group input-group-sm">ERA/EFT/EDI Portal
+                                            <span v-if="errors && errors.era_eft_edi_portal" class=" text-danger">&nbsp;&nbsp; {{ errors.era_eft_edi_portal[0] }}</span>
+                                        </span>
+                                        <input v-model="form.era_eft_edi_portal" type="text" name="era_eft_edi_portal" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group input-group-sm">
+                                        <span class="input-group input-group-sm">Initiated/Followup
+                                            <span v-if="errors && errors.initiated_followup" class=" text-danger">&nbsp;&nbsp; {{ errors.initiated_followup[0] }}</span>
+                                        </span>
+                                        <select class="form-control" v-model="form.initiated_followup" >
+                                            <option value="Initiated">Initiated</option>
+                                            <option value="Followup">Followup</option>
+                                            <option value="Initiated/Followup">Initiated/Followup</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group input-group-sm">
+                                        <span class="input-group input-group-sm">Initiated Date
+                                          <span v-if="errors && errors.initiated_date" class=" text-danger">&nbsp;&nbsp; {{ errors.initiated_date[0] }}</span>
+                                        </span>
+                                        <input v-model="form.initiated_date" type="date" name="initiated_date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group input-group-sm">
+                                        <span class="input-group input-group-sm">Followup Date
+                                          <span v-if="errors && errors.followup_date" class=" text-danger">&nbsp;&nbsp; {{ errors.followup_date[0] }}</span>
+                                        </span>
+                                        <input v-model="form.followup_date" type="date" name="followup_date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group input-group-sm">
+                                        <span class="input-group input-group-sm">Reference#
+                                          <span v-if="errors && errors.reference_no" class=" text-danger">&nbsp;&nbsp; {{ errors.reference_no[0] }}</span>
+                                        </span>
+                                        <select class="form-control" v-model="form.reference_no" name="reference_no"  >
+                                            <option value="Through Call" >Through Call</option>
+                                            <option value="Through Email" >Through Email</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- 
                                 <div class="col-sm-6">
                                     <div class="form-group input-group input-group-sm">
                                         <span class="input-group input-group-sm">Activity
@@ -55,14 +119,16 @@
                                         
                                     </div>
                                 </div>
+                                 -->
                                 <div class="col-sm-12">
                                     <div class="form-group input-group input-group-sm">
-                                        <span class="input-group input-group-sm">Description/Remarks
+                                        <span class="input-group input-group-sm">Comments
                                             <span v-if="errors && errors.description" class=" text-danger">&nbsp;&nbsp; {{ errors.description[0] }}</span>
                                         </span>
                                         <textarea name="description" class="form-control"   v-model="form.description" rows="5" placeholder="add multiple lines"></textarea>
                                         <has-error :form="form" field="description"></has-error>
                                     </div>
+                                    
                                 </div>
                                 
                             </div>
@@ -91,6 +157,7 @@
 import Multiselect from 'vue-multiselect'
 
 
+
     export default {
         components: { Multiselect},
         data () {
@@ -101,13 +168,14 @@ import Multiselect from 'vue-multiselect'
                     payers: [],
                     errors: {},
                     activities: [
-                        {"id":"followup","name":"Followup"},
-                        {"id":"call","name":"Call"},
-                        {"id":"submitted","name":"Submitted"},
-                        {"id":"referred","name":"Referred"},
-                        {"id":"research","name":"Research"},
-                        {"id":"other","name":"Other"},
+                        {"id":"Followup","name":"Followup"},
+                        {"id":"Call","name":"Call"},
+                        {"id":"Submitted","name":"Submitted"},
+                        {"id":"Referred","name":"Referred"},
+                        {"id":"Research","name":"Research"},
+                        {"id":"Other","name":"Other"},
                     ],
+                    
                     editmode:false,
                     form: new Form({
                         id : '',
@@ -115,6 +183,12 @@ import Multiselect from 'vue-multiselect'
                         provider_id: '',
                         payer: '',
                         action: '',
+                        enrollment_credentialing: '',
+                        era_eft_edi_portal:'',
+                        initiated_followup:'',
+                        initiated_date:'',
+                        followup_date:'',
+                        reference_no:'',
                         description:'',
                     }),
             }
@@ -156,7 +230,7 @@ import Multiselect from 'vue-multiselect'
                         title: data.message
                     });
                   this.$Progress.finish();
-                  
+                  form.reset();
                 } else {
                   Toast.fire({
                       icon: 'error',

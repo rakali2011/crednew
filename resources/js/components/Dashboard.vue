@@ -211,8 +211,10 @@
         data () {
             return {
             dashboard_stats: [],
+  
             series: [0, 0, 0, 0, 0, 0, 0, 0, 0],
           chartOptions: {
+            colors: ['#FFBF00', '#38c172', '#F744A6', '#00FFFF', '#6cb2eb', '#0B1FAF', '#e3342f', '#C4C2C3', '#525653'],
             chart: {
               width: 380,
               type: 'pie',

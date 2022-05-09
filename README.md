@@ -32,7 +32,7 @@ A very simple Laravel 8 + Vue 2 + AdminLTE 3 based SPA Application.
 
 ## Installation
 
-- `git clone https://gitlab.tekboox.com/usama.bajwa/prg-cred-isb.git`
+- `git clone https://github.com/rakali2011/cred1.git`
 - `cd cred1/`
 - `composer install`
 - `cp .env.example .env`

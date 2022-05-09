@@ -22,6 +22,6 @@ protected  $table = "practices";
         return $this->belongsToMany(Provider::class,'practice_providers');
     }
     public function documents() {
-        return $this->hasMany(Practicedoc::class);
+        return $this->hasMany(Practicedoc::class)->with('document_type');
     }
 }

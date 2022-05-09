@@ -59,6 +59,7 @@
                         <table width="100%">
                             <thead>
                                 <tr>
+                                    <th>Document Type</th>
                                     <th>Document Name</th>
                                     <th>Issue Date</th>
                                     <th>Expiry Date</th>
@@ -67,6 +68,8 @@
                             </thead>
                             <tbody id="document_rows">
                                 <tr v-for='(doc, index) in listdata.documents'>
+                                           <td v-if="doc.document_type.type">{{doc.document_type.type}}</td>
+                                           <td v-else></td>
                                            <td>{{doc.name}}</td>
                                            <td>{{doc.issue_date}}</td>
                                            <td>{{doc.expiry_date}}</td>
