@@ -31,9 +31,8 @@ A very simple Laravel 8 + Vue 2 + AdminLTE 3 based SPA Application.
 - Developer Options for OAuth Clients and Personal Access Token
 
 ## Installation
-
-- `git clone https://github.com/rakali2011/cred1.git`
-- `cd cred1/`
+- `git clone https://gitlab.tekboox.com/usama.bajwa/prg-cred-isb.git`
+- `cd prg-cred-isb/`
 - `composer install`
 - `cp .env.example .env`
 - Update `.env` and set your database credentials, also import your database in mysql
