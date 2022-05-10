@@ -56,7 +56,7 @@ class PayerController extends BaseController
     public function store(PayerRequest $request)
     {
         $payer = $this->payer->create([
-            'name' => $request->get('name'),
+            'name' => strtoupper($request->get('name')),
         ]);
         return $this->sendResponse($payer, 'Payer Created Successfully');
     }
@@ -92,7 +92,11 @@ class PayerController extends BaseController
      */
     public function update(PayerRequest $request, Payer $payer)
     {
-        $payer->update(['name' => $request->get('name')]);
+        $validatedData = $request->validate([
+            'name' => ['required', 'max:255', Rule::unique('payers')->ignore($payer->id)],
+        ]);
+        $validatedData['name'] = strtoupper($validatedData['name']);
+        $payer->update(['name' => $validatedData['name']]);
         return $this->sendResponse($payer, 'Payer Information has been updated');
     }
 

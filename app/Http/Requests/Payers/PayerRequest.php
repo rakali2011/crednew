@@ -37,7 +37,7 @@ class PayerRequest extends FormRequest
     public function createRules(): array
     {
         return [
-            'name' => 'required|string|max:191',
+            'name' => 'required|unique:payers|string|max:191',
             ];
     }
     /**

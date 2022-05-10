@@ -247,6 +247,38 @@
             <has-error :form="form" field="rail_road_group"></has-error>
         </div>
     </div>
+    <div class="col-sm-3">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Software Name</span>
+            <input v-model="form.software_name" type="text" name="software_name"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('software_name') }">
+            <has-error :form="form" field="software_name"></has-error>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Clear House Name</span>
+            <input v-model="form.clearing_house_name" type="text" name="clearing_house_name"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('clearing_house_name') }">
+            <has-error :form="form" field="clearing_house_name"></has-error>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Clear House User</span>
+            <input v-model="form.clearing_house_user" type="text" name="clearing_house_user"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('clearing_house_user') }">
+            <has-error :form="form" field="clearing_house_user"></has-error>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Clear House Password</span>
+            <input v-model="form.clearing_house_password" type="text" name="clearing_house_password"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('clearing_house_password') }">
+            <has-error :form="form" field="clearing_house_password"></has-error>
+        </div>
+    </div>
     
 </div>
 
@@ -533,6 +565,10 @@
                     grp_madicaid_id : '',
                     grp_mrc_id : '',
                     rail_road_group : '',
+                    software_name : '',
+                    clearing_house_name : '',
+                    clearing_house_user : '',
+                    clearing_house_password : '',
                     service_address: '',
                     service_city: '',
                     service_state: '',
