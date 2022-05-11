@@ -24,6 +24,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/practiceprovider/export/{id}', [App\Http\Controllers\ExportController::class, 'practice_provider_export'])->name('home1');
 
+Route::get('/document/{id}', [App\Http\Controllers\DocumentController::class, 'show']);
+
+
+
+
 Route::get('home', function () {
     return redirect('/dashboard');
 });

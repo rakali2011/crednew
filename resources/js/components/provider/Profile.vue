@@ -91,7 +91,7 @@
                                            <td>{{enroll.name}}</td>
                                            <td>{{enroll.pivot.status}}</td>
                                            <td>{{enroll.pivot.provider_identifier}}</td>
-                                           <td><a @click="remarksModal(listdata.id,enroll.id)" href="#" pro_id="576" pay_id="11" data-toggle="modal" class="remark_detail_view">View</a></td>
+                                           <td><a @click="remarksModal(listdata.id,enroll.id)" href="#" pro_id="576" pay_id="11" data-toggle="modal" class="remark_detail_view">Show</a></td>
                                         </tr>
                             </tbody>
                         </table>
@@ -107,7 +107,7 @@
                                     <th>Document Name</th>
                                     <th>Issue Date</th>
                                     <th>Expiry Date</th>
-                                    <th></th>
+                                    <th>View</th>
                                 </tr>
                             </thead>
                             <tbody id="document_rows">
@@ -117,7 +117,7 @@
                                            <td>{{doc.name}}</td>
                                            <td>{{doc.issue_date}}</td>
                                            <td>{{doc.expiry_date}}</td>
-                                           <td><a href="#" pro_id="576" pay_id="11" data-toggle="modal" class="remark_detail_view"></a></td>
+                                           <td><a :href="'/document/' + doc.id" target="_blank">Show</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -153,6 +153,14 @@ export default {
                     $('#remarksDetail').modal('show');
                 }.bind(this));
                 
+            },
+            showDoc: function (doc_id) {
+                window.open(
+  'http://127.0.0.1:8000/document/show/1',
+  '_blank' // <- This is what makes it open in a new window.
+);
+                // window.location="www.google.com";
+                // alert("testing");
             },
 	}
 }
