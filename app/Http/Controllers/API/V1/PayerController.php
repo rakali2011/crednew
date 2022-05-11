@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Requests\Payers\PayerRequest;
 use App\Models\Payer;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class PayerController extends BaseController
