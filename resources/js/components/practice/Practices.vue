@@ -354,69 +354,6 @@
         </div>
     </div>
 
-<div class="row">
-    <div class="col-sm-4">
-        <div class="form-group input-group input-group-sm">
-            <label class="input-group input-group-sm">Service Address</label>
-        </div>
-    </div>
-    <div class="col-sm-8">
-        <div class="form-group input-group input-group-sm">
-            <input v-model="form.service_address" type="text" name="service_address"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('service_address') }">
-            <has-error :form="form" field="service_address"></has-error>
-        </div>
-    </div>
-
-    <div class="col-sm-2">
-        <div class="form-group input-group input-group-sm">
-            <span class="input-group input-group-sm">City</span>
-            <input v-model="form.service_city" type="text" name="service_city"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('service_city') }">
-            <has-error :form="form" field="service_city"></has-error>
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="form-group input-group input-group-sm">
-            <span class="input-group input-group-sm">State</span>
-            <input v-model="form.service_state" type="text" name="service_state"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('service_state') }">
-            <has-error :form="form" field="service_state"></has-error>
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="form-group input-group input-group-sm">
-            <span class="input-group input-group-sm">Zip</span>
-            <input v-model="form.service_zip" type="text"  maxlength="5" name="service_zip"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('service_zip') }">
-            <has-error :form="form" field="service_zip"></has-error>
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="form-group input-group input-group-sm">
-            <span class="input-group input-group-sm">Fax</span>
-            <input v-model="form.service_fax" type="text" name="service_fax"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('service_fax') }">
-            <has-error :form="form" field="service_fax"></has-error>
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="form-group input-group input-group-sm">
-            <span class="input-group input-group-sm">Phone</span>
-            <input v-model="form.service_phone" type="text" name="service_phone"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('service_phone') }">
-            <has-error :form="form" field="service_phone"></has-error>
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="form-group input-group input-group-sm">
-            <span class="input-group input-group-sm">County</span>
-            <input v-model="form.service_county" type="text" name="service_county"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('service_county') }">
-            <has-error :form="form" field="service_county"></has-error>
-        </div>
-    </div>
-</div>
 <div class="row addr_panel">
     <div class="col-sm-4">
         <div class="form-group input-group input-group-sm">
@@ -719,12 +656,15 @@
           editModal(practice){
               this.editmode = true;
               this.form.reset();
+              this.apartments = [];
               $('#addNew').modal('show');
               this.form.fill(practice);
+              this.apartments=practice["plocations"];
           },
           newModal(){
               this.editmode = false;
               this.form.reset();
+              this.apartments = [];
               $('#addNew').modal('show');
           },
           createDocument(){
@@ -803,8 +743,8 @@
           updatePractice(){
               this.$Progress.start();
               console.log(this.apartments);
-              this.form.append('service_addresses',JSON.stringify(this.apartments));
-              
+            //   this.form.append('service_addresses',JSON.stringify(this.apartments));
+              this.form.service_address = this.apartments; 
               this.form.put('api/practice/'+this.form.id)
               .then((response) => {
                   // success

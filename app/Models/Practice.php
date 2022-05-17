@@ -24,4 +24,7 @@ protected  $table = "practices";
     public function documents() {
         return $this->hasMany(Practicedoc::class)->with('document_type');
     }
+    public function plocations() {
+        return $this->hasMany(Plocation::class);
+    }
 }
