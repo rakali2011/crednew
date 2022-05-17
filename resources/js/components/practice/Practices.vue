@@ -157,7 +157,7 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Group NPI</span>
-            <input v-model="form.group_npi" type="text" name="group_npi"
+            <input v-model="form.group_npi" type="text" maxlength="10" name="group_npi"
                 class="form-control" :class="{ 'is-invalid': form.errors.has('group_npi') }">
             <has-error :form="form" field="group_npi"></has-error>
         </div>
@@ -165,7 +165,7 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Practice Tax ID</span>
-            <input v-model="form.practice_tax_id" type="text" name="practice_tax_id"
+            <input v-model="form.practice_tax_id" type="text" maxlength="9" name="practice_tax_id"
                 class="form-control" :class="{ 'is-invalid': form.errors.has('practice_tax_id') }">
             <has-error :form="form" field="practice_tax_id"></has-error>
         </div>
@@ -282,7 +282,79 @@
     
 </div>
 
-<div class="row addr_panel">
+    <div class="row addr_panel">
+        <div class="col-sm-3">
+            <button type="button" v-on:click="addNewApartment" class="btn btn-sm btn-success">
+                Add Service Address
+            </button>
+        </div>
+        <div class="col-sm-9">
+            You can add multiple service address.
+        </div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div v-for="(apartment, index) in apartments">
+        <div class="row">
+            <div class="col-sm-2">
+                <label>&nbsp;</label>
+                <button type="button" v-on:click="removeApartment(index)" class="btn btn-sm btn-danger">
+                    Remove
+                </button>
+            </div>
+            <div class="form-group col-sm-10">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">Service Address</span>
+                        <input v-model="apartment.service_address" type="text" name="apartments[][service_address]"
+                        class="form-control">            
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">City</span>
+                        <input v-model="apartment.service_city" type="text"
+                        name="apartments[][service_city]" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">State</span>
+                        <input v-model="apartment.service_state" type="text"
+                        name="apartments[][service_state]" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">Zip</span>
+                        <input v-model="apartment.service_zip" type="text"  maxlength="5"
+                        name="apartments[][service_zip]" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">Fax</span>
+                        <input v-model="apartment.service_fax" type="text"
+                        name="apartments[][service_fax]" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">Phone</span>
+                        <input v-model="apartment.service_phone" type="text"
+                        name="apartments[][service_phone]" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-sm-2">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">County</span>
+                        <input v-model="apartment.service_county" type="text"
+                        name="apartments[][service_county]" class="form-control">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<div class="row">
     <div class="col-sm-4">
         <div class="form-group input-group input-group-sm">
             <label class="input-group input-group-sm">Service Address</label>
@@ -315,7 +387,7 @@
     <div class="col-sm-2">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Zip</span>
-            <input v-model="form.service_zip" type="text" name="service_zip"
+            <input v-model="form.service_zip" type="text"  maxlength="5" name="service_zip"
                 class="form-control" :class="{ 'is-invalid': form.errors.has('service_zip') }">
             <has-error :form="form" field="service_zip"></has-error>
         </div>
@@ -379,7 +451,7 @@
     <div class="col-sm-2">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Zip</span>
-            <input v-model="form.pay_zip" type="text" name="pay_zip"
+            <input v-model="form.pay_zip" type="text"  maxlength="5" name="pay_zip"
                 class="form-control" :class="{ 'is-invalid': form.errors.has('pay_zip') }">
             <has-error :form="form" field="pay_zip"></has-error>
         </div>
@@ -502,6 +574,16 @@
         },
         data () {
             return {
+                apartment: {
+                    service_address: '',
+                    service_city: '',
+                    service_state: '',
+                    service_fax: '',
+                    service_zip: '',
+                    service_phone: '',
+                    service_county: '',
+                },
+                apartments: [],
                 columns: [
                             {
                               label: 'Practice Name',
@@ -594,9 +676,15 @@
             }
         },
         methods: {
+            addNewApartment: function () {
+                this.apartments.push(Vue.util.extend({}, this.apartment))
+            },
+            removeApartment: function (index) {
+                Vue.delete(this.apartments, index);
+            },
             onChange(e){
-            console.log("slected file",e.target.files[0]);
-              this.docform.file_name = e.target.files[0];
+                //console.log("slected file",e.target.files[0]);
+                this.docform.file_name = e.target.files[0];
           },
           profileModal(row){
               $('#infoNew').modal('show');
@@ -681,7 +769,8 @@
           },
           createPractice(){
               this.$Progress.start();
-
+              console.log(this.apartments);
+              this.form.append('service_addresses',JSON.stringify(this.apartments));
               this.form.post('api/practice')
               .then((data)=>{
                 if(data.data.success){
@@ -713,6 +802,9 @@
           },
           updatePractice(){
               this.$Progress.start();
+              console.log(this.apartments);
+              this.form.append('service_addresses',JSON.stringify(this.apartments));
+              
               this.form.put('api/practice/'+this.form.id)
               .then((response) => {
                   // success
