@@ -91,13 +91,6 @@ class PracticeController extends BaseController
             'clear_house_name' => $request->get('clear_house_name'),
             'clear_house_user' => $request->get('clear_house_user'),
             'clear_house_password' => $request->get('clear_house_password'),
-            'service_address' => $request->get('service_address'),
-            'service_city' => $request->get('service_city'),
-            'service_state' => $request->get('service_state'),
-            'service_zip' => $request->get('service_zip'),
-            'service_fax' => $request->get('service_fax'),
-            'service_phone' => $request->get('service_phone'),
-            'service_county' => $request->get('service_county'),
             'pay_address' => $request->get('pay_address'),
             'pay_city' => $request->get('pay_city'),
             'pay_state' => $request->get('pay_state'),
@@ -114,6 +107,27 @@ class PracticeController extends BaseController
             'owner_phone' => $request->get('owner_phone'),
             'owner_mobile' => $request->get('owner_mobile'),
         ]);
+
+        $practice->plocations()->delete();
+        if (($request->get('service_address'))) {
+            foreach ($request->get('service_address') as $key => $address) {
+                if($address["service_address"]==""){
+                    continue;
+                }
+                
+                $plocation = new Plocation;
+                $plocation->practice_id = $practice->id;
+                $plocation->service_address = $address["service_address"];
+                $plocation->service_city = $address["service_city"];
+                $plocation->service_county = $address["service_county"];
+                $plocation->service_fax = $address["service_fax"];
+                $plocation->service_phone = $address["service_phone"];
+                $plocation->service_state = $address["service_state"];
+                $plocation->service_zip =$address["service_zip"];
+                
+                $plocation->save();
+            }
+        }
 
         return $this->sendResponse($practice, 'Practice Created Successfully');
     }

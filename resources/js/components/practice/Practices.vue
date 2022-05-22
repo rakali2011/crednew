@@ -157,16 +157,18 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Group NPI</span>
-            <input v-model="form.group_npi" type="text" maxlength="10" name="group_npi"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('group_npi') }">
+            <masked-input v-model="form.group_npi" mask="1111111111" name="group_npi" class="form-control" :class="{ 'is-invalid': form.errors.has('group_npi') }" />
+            <!-- <input v-model="form.group_npi" type="text" v-on:keypress="keymonitor($event, 9)" name="group_npi"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('group_npi') }"> -->
             <has-error :form="form" field="group_npi"></has-error>
         </div>
     </div>
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Practice Tax ID</span>
-            <input v-model="form.practice_tax_id" type="text" maxlength="9" name="practice_tax_id"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('practice_tax_id') }">
+            <masked-input v-model="form.practice_tax_id" mask="111111111" name="practice_tax_id" class="form-control" :class="{ 'is-invalid': form.errors.has('practice_tax_id') }" />
+            <!-- <input v-model="form.practice_tax_id" type="text" v-on:keypress="keymonitor($event, 8)" name="practice_tax_id"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('practice_tax_id') }"> -->
             <has-error :form="form" field="practice_tax_id"></has-error>
         </div>
     </div>
@@ -198,8 +200,11 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">CLIA Expiry</span>
-            <input v-model="form.clia_expiry" type="date" name="clia_expiry"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('clia_expiry') }">
+            <datepicker placeholder="Select Date" v-model="form.clia_expiry" input-class ="my-picker-class" 
+            class="form-control" :class="{ 'is-invalid': form.errors.has('clia_expiry') }" >
+            </datepicker>
+            <!-- <input v-model="form.clia_expiry" type="date" name="clia_expiry" 
+                class="form-control" :class="{ 'is-invalid': form.errors.has('clia_expiry') }"> -->
             <has-error :form="form" field="clia_expiry"></has-error>
         </div>
     </div>
@@ -296,12 +301,14 @@
     <div v-for="(apartment, index) in apartments">
         <div class="row">
             <div class="col-sm-2">
-                <label>&nbsp;</label>
+                <div class="form-group input-group input-group-sm">
+                <span class="input-group input-group-sm">&nbsp;</span>
                 <button type="button" v-on:click="removeApartment(index)" class="btn btn-sm btn-danger">
                     Remove
                 </button>
+                </div>
             </div>
-            <div class="form-group col-sm-10">
+            <div class="form-group col-sm-6">
                 <div class="form-group input-group input-group-sm">
                     <span class="input-group input-group-sm">Service Address</span>
                         <input v-model="apartment.service_address" type="text" name="apartments[][service_address]"
@@ -322,28 +329,31 @@
                         name="apartments[][service_state]" class="form-control">
                 </div>
             </div>
-            <div class="form-group col-sm-2">
+            <div class="form-group col-sm-3">
                 <div class="form-group input-group input-group-sm">
                     <span class="input-group input-group-sm">Zip</span>
-                        <input v-model="apartment.service_zip" type="text"  maxlength="5"
-                        name="apartments[][service_zip]" class="form-control">
+                    <masked-input v-model="apartment.service_zip" mask="11111" name="apartments[][service_zip]" class="form-control" />
+                    <!-- <input v-model="apartment.service_zip" type="text"  v-on:keypress="keymonitor($event, 4)"
+                        name="apartments[][service_zip]" class="form-control"> -->
                 </div>
             </div>
-            <div class="form-group col-sm-2">
+            <div class="form-group col-sm-3">
                 <div class="form-group input-group input-group-sm">
                     <span class="input-group input-group-sm">Fax</span>
-                        <input v-model="apartment.service_fax" type="text"
-                        name="apartments[][service_fax]" class="form-control">
+                    <masked-input v-model="apartment.service_fax" mask="\+\1 (111) 111-1111" name="apartments[][service_fax]" class="form-control" />
+                        <!-- <input v-model="apartment.service_fax" type="text"
+                        name="apartments[][service_fax]" class="form-control"> -->
                 </div>
             </div>
-            <div class="form-group col-sm-2">
+            <div class="form-group col-sm-3">
                 <div class="form-group input-group input-group-sm">
                     <span class="input-group input-group-sm">Phone</span>
-                        <input v-model="apartment.service_phone" type="text"
-                        name="apartments[][service_phone]" class="form-control">
+                    <masked-input v-model="apartment.service_phone" mask="\+\1 (111) 111-1111" name="apartments[][service_phone]" class="form-control" />
+                        <!-- <input v-model="apartment.service_phone" type="text"
+                        name="apartments[][service_phone]" class="form-control"> -->
                 </div>
             </div>
-            <div class="form-group col-sm-2">
+            <div class="form-group col-sm-3">
                 <div class="form-group input-group input-group-sm">
                     <span class="input-group input-group-sm">County</span>
                         <input v-model="apartment.service_county" type="text"
@@ -355,19 +365,15 @@
     </div>
 
 <div class="row addr_panel">
-    <div class="col-sm-4">
+
+    <div class="form-group col-sm-6">
         <div class="form-group input-group input-group-sm">
-            <label class="input-group input-group-sm">Pay Address</label>
-        </div>
-    </div>
-    <div class="col-sm-8">
-        <div class="form-group input-group input-group-sm">
-            <input v-model="form.pay_address" type="text" name="pay_address"
+            <span class="input-group input-group-sm">Pay Address</span>
+                <input v-model="form.pay_address" type="text" name="pay_address"
                 class="form-control" :class="{ 'is-invalid': form.errors.has('pay_address') }">
-            <has-error :form="form" field="pay_address"></has-error>
+                <has-error :form="form" field="pay_address"></has-error>            
         </div>
     </div>
-    
 
     <div class="col-sm-2">
         <div class="form-group input-group input-group-sm">
@@ -388,24 +394,27 @@
     <div class="col-sm-2">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Zip</span>
-            <input v-model="form.pay_zip" type="text"  maxlength="5" name="pay_zip"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('pay_zip') }">
+            <masked-input v-model="form.pay_zip" mask="11111" name="pay_zip" class="form-control" :class="{ 'is-invalid': form.errors.has('pay_zip') }" />
+            <!-- <input v-model="form.pay_zip" type="text" v-on:keypress="keymonitor($event, 4)"  name="pay_zip"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('pay_zip') }"> -->
             <has-error :form="form" field="pay_zip"></has-error>
         </div>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Fax</span>
-            <input v-model="form.pay_fax" type="text" name="pay_fax"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('pay_fax') }">
+            <masked-input v-model="form.pay_fax" mask="\+\1 (111) 111-1111" name="pay_fax" class="form-control" :class="{ 'is-invalid': form.errors.has('pay_fax') }" />
+            <!-- <input v-model="form.pay_fax" type="text" name="pay_fax"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('pay_fax') }"> -->
             <has-error :form="form" field="pay_fax"></has-error>
         </div>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Phone</span>
-            <input v-model="form.pay_phone" type="text" name="pay_phone"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('pay_phone') }">
+            <masked-input v-model="form.pay_phone" mask="\+\1 (111) 111-1111" name="pay_phone" class="form-control" :class="{ 'is-invalid': form.errors.has('pay_phone') }" />
+            <!-- <input v-model="form.pay_phone" type="text" name="pay_phone"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('pay_phone') }"> -->
             <has-error :form="form" field="pay_phone"></has-error>
         </div>
     </div>
@@ -439,16 +448,18 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Phone</span>
-            <input v-model="form.contact1_phone" type="text" name="contact1_phone"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('contact1_phone') }">
+            <masked-input v-model="form.contact1_phone" mask="\+\1 (111) 111-1111" name="contact1_phone" class="form-control" :class="{ 'is-invalid': form.errors.has('contact1_phone') }" />
+            <!-- <input v-model="form.contact1_phone" type="text" name="contact1_phone"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('contact1_phone') }"> -->
             <has-error :form="form" field="contact1_phone"></has-error>
         </div>
     </div>
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Mobile</span>
-            <input v-model="form.contact1_mobile" type="text" name="contact1_mobile"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('contact1_mobile') }">
+            <masked-input v-model="form.contact1_mobile" mask="\+\1 (111) 111-1111" name="contact1_mobile" class="form-control" :class="{ 'is-invalid': form.errors.has('contact1_mobile') }" />
+            <!-- <input v-model="form.contact1_mobile" type="text" name="contact1_mobile"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('contact1_mobile') }"> -->
             <has-error :form="form" field="contact1_mobile"></has-error>
         </div>
     </div>
@@ -473,16 +484,18 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Phone</span>
-            <input v-model="form.owner_phone" type="text" name="owner_phone"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('owner_phone') }">
+            <masked-input v-model="form.owner_phone" mask="\+\1 (111) 111-1111" name="owner_phone" class="form-control" :class="{ 'is-invalid': form.errors.has('owner_phone') }" />
+            <!-- <input v-model="form.owner_phone" type="text" @input="phoneNumber" name="owner_phone"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('owner_phone') }"> -->
             <has-error :form="form" field="owner_phone"></has-error>
         </div>
     </div>
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Mobile</span>
-            <input v-model="form.owner_mobile" type="text" name="owner_mobile"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('owner_mobile') }">
+            <masked-input v-model="form.owner_mobile" mask="\+\1 (111) 111-1111" name="owner_mobile" class="form-control" :class="{ 'is-invalid': form.errors.has('owner_mobile') }" />
+            <!-- <input v-model="form.owner_mobile" type="text" name="owner_mobile"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('owner_mobile') }"> -->
             <has-error :form="form" field="owner_mobile"></has-error>
         </div>
     </div>
@@ -500,14 +513,21 @@
     </div>
   </section>
 </template>
+<style>
+        .my-picker-class{
+            border: none !important;
+           }
+    </style>
 
 <script>
     import { VueGoodTable } from 'vue-good-table';
     import Multiselect from 'vue-multiselect'
     import profile from "../../components/practice/Profile";
+    import MaskedInput from 'vue-masked-input';
+    import Datepicker from 'vuejs-datepicker';
     export default {
       components: {
-          VueGoodTable,profile,Multiselect
+          VueGoodTable,profile,Multiselect,MaskedInput,Datepicker
         },
         data () {
             return {
@@ -588,13 +608,6 @@
                     clearing_house_name : '',
                     clearing_house_user : '',
                     clearing_house_password : '',
-                    service_address: '',
-                    service_city: '',
-                    service_state: '',
-                    service_fax: '',
-                    service_zip: '',
-                    service_phone: '',
-                    service_county: '',
                     pay_address: '',
                     pay_city: '',
                     pay_state: '',
@@ -613,6 +626,26 @@
             }
         },
         methods: {
+            
+            keymonitor: function (e,len) {
+                
+                var length = e.target.value.length;
+       if(length > len) {
+            e.preventDefault();
+       } else if(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            e.preventDefault();
+       } else if((length == 0) && (e.which == 48)) {
+            e.preventDefault();
+       }
+            },
+            phoneNumber() {
+                
+        var x = this.form.owner_phone.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+  this.form.owner_phone = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    },
+    
+            
+
             addNewApartment: function () {
                 this.apartments.push(Vue.util.extend({}, this.apartment))
             },
@@ -710,7 +743,9 @@
           createPractice(){
               this.$Progress.start();
               console.log(this.apartments);
-              this.form.append('service_addresses',JSON.stringify(this.apartments));
+            //   this.form.append('service_addresses',JSON.stringify(this.apartments));
+              this.form.service_address = this.apartments; 
+            //   this.form.put('api/practice/'+this.form.id)
               this.form.post('api/practice')
               .then((data)=>{
                 if(data.data.success){

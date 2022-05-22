@@ -177,7 +177,7 @@ class ProviderController extends BaseController
      * @param  \App\Provider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProviderRequest $request, $id)
     {
         $request->validate([
 //            'email' => 'required|email|unique:users,email,'. $userId.',id',

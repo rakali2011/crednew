@@ -141,8 +141,9 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Individual NPI</span>
-            <input v-model="form.individual_npi" type="text" name="individual_npi"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('individual_npi') }">
+            <masked-input v-model="form.individual_npi" mask="1111111111" name="individual_npi" class="form-control" :class="{ 'is-invalid': form.errors.has('individual_npi') }" />
+            <!-- <input v-model="form.individual_npi" type="text" name="individual_npi"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('individual_npi') }"> -->
             <has-error :form="form" field="individual_npi"></has-error>
         </div>
     </div>
@@ -157,16 +158,18 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Tax ID</span>
-            <input v-model="form.tax_id" type="text" name="tax_id"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('tax_id') }">
+            <masked-input v-model="form.tax_id" mask="111111111" name="tax_id" class="form-control" :class="{ 'is-invalid': form.errors.has('tax_id') }" />
+            <!-- <input v-model="form.tax_id" type="text" name="tax_id"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('tax_id') }"> -->
             <has-error :form="form" field="tax_id"></has-error>
         </div>
     </div>
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">SSN</span>
-            <input v-model="form.ssn" type="text" name="ssn"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('ssn') }">
+            <masked-input v-model="form.ssn" mask="111111111" name="ssn" class="form-control" :class="{ 'is-invalid': form.errors.has('ssn') }" />
+            <!-- <input v-model="form.ssn" type="text" name="ssn"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('ssn') }"> -->
             <has-error :form="form" field="ssn"></has-error>
         </div>
     </div>
@@ -189,16 +192,20 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">DOB</span>
-            <input v-model="form.dob" type="date" name="dob"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('dob') }">
+            <datepicker placeholder="Select Date" v-model="form.dob" input-class ="my-picker-class" name="dob" 
+            class="form-control" :class="{ 'is-invalid': form.errors.has('dob') }" >
+            </datepicker>
+            <!-- <input v-model="form.dob" type="date" name="dob"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('dob') }"> -->
             <has-error :form="form" field="dob"></has-error>
         </div>
     </div>
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Ph/Cell</span>
-            <input v-model="form.cell" type="text" name="cell"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('cell') }">
+            <masked-input v-model="form.cell" mask="\+\1 (111) 111-1111" name="cell" class="form-control" :class="{ 'is-invalid': form.errors.has('cell') }" />
+            <!-- <input v-model="form.cell" type="text" name="cell"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('cell') }"> -->
             <has-error :form="form" field="cell"></has-error>
         </div>
     </div>
@@ -231,8 +238,9 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Zip</span>
-            <input v-model="form.home_zip" type="text" name="home_zip"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('home_zip') }">
+            <masked-input v-model="form.home_zip" mask="11111" name="home_zip" class="form-control" :class="{ 'is-invalid': form.errors.has('home_zip') }" />
+            <!-- <input v-model="form.home_zip" type="text" name="home_zip"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('home_zip') }"> -->
             <has-error :form="form" field="home_zip"></has-error>
         </div>
     </div>
@@ -383,16 +391,22 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">DEA Effective</span>
-            <input v-model="form.dea_effective_date" type="date" name="dea_effective_date"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('dea_effective_date') }">
+            <datepicker placeholder="Select Date" v-model="form.dea_effective_date" name="dea_effective_date" input-class ="my-picker-class" 
+            class="form-control" :class="{ 'is-invalid': form.errors.has('dea_effective_date') }" >
+            </datepicker>
+            <!-- <input v-model="form.dea_effective_date" type="date" name="dea_effective_date"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('dea_effective_date') }"> -->
             <has-error :form="form" field="dea_effective_date"></has-error>
         </div>
     </div>
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">DEA Expiry</span>
-            <input v-model="form.dea_expiry_date" type="date" name="dea_expiry_date"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('dea_expiry_date') }">
+            <datepicker placeholder="Select Date" v-model="form.dea_expiry_date" name="dea_expiry_date" input-class ="my-picker-class" 
+            class="form-control" :class="{ 'is-invalid': form.errors.has('dea_expiry_date') }" >
+            </datepicker>
+            <!-- <input v-model="form.dea_expiry_date" type="date" name="dea_expiry_date"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('dea_expiry_date') }"> -->
             <has-error :form="form" field="dea_expiry_date"></has-error>
         </div>
     </div>
@@ -415,16 +429,22 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">CDS Effective</span>
-            <input v-model="form.cds_effective_date" type="date" name="cds_effective_date"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('cds_effective_date') }">
+            <datepicker placeholder="Select Date" v-model="form.cds_effective_date" name="cds_effective_date" input-class ="my-picker-class" 
+            class="form-control" :class="{ 'is-invalid': form.errors.has('cds_effective_date') }" >
+            </datepicker>
+            <!-- <input v-model="form.cds_effective_date" type="date" name="cds_effective_date"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('cds_effective_date') }"> -->
             <has-error :form="form" field="cds_effective_date"></has-error>
         </div>
     </div>
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">CDS Expiry</span>
-            <input v-model="form.cds_expiry_date" type="date" name="cds_expiry_date"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('cds_expiry_date') }">
+            <datepicker placeholder="Select Date" v-model="form.cds_expiry_date" name="cds_expiry_date" input-class ="my-picker-class" 
+            class="form-control" :class="{ 'is-invalid': form.errors.has('cds_expiry_date') }" >
+            </datepicker>
+            <!-- <input v-model="form.cds_expiry_date" type="date" name="cds_expiry_date"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('cds_expiry_date') }"> -->
             <has-error :form="form" field="cds_expiry_date"></has-error>
         </div>
     </div>
@@ -447,16 +467,22 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">License Effective</span>
-            <input v-model="form.state_license_date" type="date" name="state_license_date"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('state_license_date') }">
+            <datepicker placeholder="Select Date" v-model="form.state_license_date" name="state_license_date" input-class ="my-picker-class" 
+            class="form-control" :class="{ 'is-invalid': form.errors.has('state_license_date') }" >
+            </datepicker>
+            <!-- <input v-model="form.state_license_date" type="date" name="state_license_date"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('state_license_date') }"> -->
             <has-error :form="form" field="state_license_date"></has-error>
         </div>
     </div>
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">License Expiry</span>
-            <input v-model="form.state_license_expiry" type="date" name="state_license_expiry"
-                class="form-control" :class="{ 'is-invalid': form.errors.has('state_license_expiry') }">
+            <datepicker placeholder="Select Date" v-model="form.state_license_expiry" name="state_license_expiry" input-class ="my-picker-class" 
+            class="form-control" :class="{ 'is-invalid': form.errors.has('state_license_expiry') }" >
+            </datepicker>
+            <!-- <input v-model="form.state_license_expiry" type="date" name="state_license_expiry"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('state_license_expiry') }"> -->
             <has-error :form="form" field="state_license_expiry"></has-error>
         </div>
     </div>
@@ -508,13 +534,20 @@
 </div>
   </section>
 </template>
+<style>
+        .my-picker-class{
+            border: none !important;
+           }
+    </style>
 <script>
 import { VueGoodTable } from 'vue-good-table';
 
 import Multiselect from 'vue-multiselect'
 import profile from "../../components/provider/Profile";
+import MaskedInput from 'vue-masked-input';
+import Datepicker from 'vuejs-datepicker';
     export default {
-        components: { VueGoodTable,profile,Multiselect },
+        components: { VueGoodTable,profile,Multiselect,MaskedInput,Datepicker },
         data () {
             return {
 

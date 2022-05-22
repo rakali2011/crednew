@@ -35,11 +35,13 @@
         "vue-apexcharts": "^1.6.2",
         "vue-excel-xlsx": "^1.2.2",
         "vue-good-table": "^2.21.11",
+        "vue-masked-input": "^0.5.2",
         "vue-moment": "^4.1.0",
         "vue-multiselect": "^2.1.6",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.5.3",
         "vuejs-datatable": "^2.0.0-alpha.7",
+        "vuejs-datepicker": "^1.6.2",
         "vuelidate": "^0.7.7"
     }
 }

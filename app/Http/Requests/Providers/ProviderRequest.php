@@ -97,7 +97,7 @@ class ProviderRequest extends FormRequest
     public function updateRules(): array
     {
         return [
-                        'individual_npi' => 'required|digits:10',
+            'individual_npi' => 'required|digits:10',
             'full_name' => 'required|string|max:50',
             'tax_id' => 'required|digits:9',
             'ssn' => 'required|digits:9',
