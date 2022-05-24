@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Requests\Providers\ProviderRequest;
 use App\Models\Provider;
+use App\Models\Login;
 use Illuminate\Http\Request;
 
 class ProviderController extends BaseController
@@ -27,7 +28,7 @@ class ProviderController extends BaseController
      */
     public function index()
     {
-        $providers = $this->provider->latest()->paginate(100)->load("practices")->load("payers")->load("documents");
+        $providers = $this->provider->latest()->paginate(100)->load("practices")->load("payers")->load("documents")->load("logins");
         return $this->sendResponse($providers, 'Provider list');
     }
 
@@ -50,15 +51,7 @@ class ProviderController extends BaseController
     public function store(ProviderRequest $request)
     {
         $request->validate([
-//            'email' => 'email|unique:users',
-//            'individual_npi' => 'required|unique:providers,individual_npi,'. $ignore_provider_id.',id,deleted,0',
-//            'individual_npi' => [
-//                'required',
-//                'max:10',
-//                Rule::unique('providers')->where(function($query) use ($pro) {
-//                  $query->whereNotIn('id', $pro);
-//    })
-//   ],
+
             'individual_npi' => 'required|unique:providers,individual_npi,NULL,id,deleted_at,NULL',
         ]);
 //        $validatedData = $request->validated();
@@ -125,9 +118,27 @@ class ProviderController extends BaseController
             'state_license_date' => $request->get('state_license_date'),
             'state_license_expiry' => $request->get('state_license_expiry'),
         ]);
-//$provider = $this->provider->create($request->all());
+
         $practices = $request->get('selected_practices');
         $provider->practices()->attach($practices);
+
+        if (($request->get('web_portals'))) {
+            foreach ($request->get('web_portals') as $key => $portal) {
+                if($portal["loginweb"]=="" && $portal["loginuser"]==""){
+                    continue;
+                }
+                
+                $login = new Login;
+                $login->provider_id = $provider->id;
+                $login->loginweb = $portal["loginweb"];
+                $login->loginuser = $portal["loginuser"];
+                $login->loginpass = $portal["loginpass"];
+                $login->additional_information = $portal["additional_information"];
+                $login->save();
+            }
+        }
+
+
         return $this->sendResponse($provider, 'Provider Created Successfully');
     }
 
@@ -180,25 +191,35 @@ class ProviderController extends BaseController
     public function update(ProviderRequest $request, $id)
     {
         $request->validate([
-//            'email' => 'required|email|unique:users,email,'. $userId.',id',
             'individual_npi' => 'required|unique:providers,individual_npi,'. $id.',id,deleted_at,NULL',
-//            'individual_npi' => [
-//                'required',
-//                'max:10',
-//                Rule::unique('providers')->where(function($query) use ($pro) {
-//                  $query->whereNotIn('id', $pro);
-//    })
-//   ],
         ]);
-//        dd($request->all());
+
         $practices = $request->get('selected_practices');
-//        $request->request->remove('selected_practices');
-//        dd($request->get('selected_practices'));
+
         $provider = $this->provider->findOrFail($id);
         
-        $provider->update($request->except('selected_practices','id'));
+        $provider->update($request->except('selected_practices','id','web_portals'));
         
         $provider->practices()->sync($practices, TRUE);
+
+        $provider->logins()->delete();
+        if (($request->get('web_portals'))) {
+            foreach ($request->get('web_portals') as $key => $portal) {
+                if($portal["loginweb"]=="" && $portal["loginuser"]==""){
+                    continue;
+                }
+                
+                $login = new Login;
+                $login->provider_id = $provider->id;
+                $login->loginweb = $portal["loginweb"];
+                $login->loginuser = $portal["loginuser"];
+                $login->loginpass = $portal["loginpass"];
+                $login->additional_information = $portal["additional_information"];
+                $login->save();
+            }
+        }
+
+
         return $this->sendResponse($provider, 'Provider Information has been updated');
     }
     public function allProvidersStatus(Request $request){

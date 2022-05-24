@@ -327,7 +327,7 @@
         </div>
     </div>
 </div>
-<!--Web portal -->
+<!--CAQH Web portal -->
 <div class="row addr_panel">
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
@@ -370,7 +370,60 @@
         </div>
     </div>
 </div>
-<!--Web portal ends-->
+<!--CAQH Web portal ends-->
+<!--Web portal starts-->
+    <div class="row">
+        <div class="col-sm-3">
+            <button type="button" v-on:click="addNewLogin" class="btn btn-sm btn-success">
+                Add Web Portals
+            </button>
+        </div>
+        <div class="col-sm-9">
+            You can add multiple web portals.
+        </div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div v-for="(login, index) in logins">
+        <div class="row webportal_panel">
+            <div class="col-sm-2">
+                <div class="form-group input-group input-group-sm">
+                <span class="input-group input-group-sm">&nbsp;</span>
+                <button type="button" v-on:click="removeLogin(index)" class="btn btn-sm btn-danger">
+                    Remove
+                </button>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">Web Portal Name</span>
+                        <input v-model="login.loginweb" type="text" name="logins[][loginweb]"
+                        class="form-control">            
+                </div>
+            </div>
+            <div class="form-group col-sm-3">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">User Name</span>
+                        <input v-model="login.loginuser" type="text"
+                        name="logins[][loginuser]" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-sm-3">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">Password</span>
+                        <input v-model="login.loginpass" type="text"
+                        name="logins[][loginpass]" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-sm-12">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">Security Question/Notes</span>
+                        <input v-model="login.additional_information" type="text"
+                        name="logins[][additional_information]" class="form-control">
+                </div>
+            </div>
+            
+        </div>
+    </div>
 <div class="row">
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
@@ -552,7 +605,13 @@ import Datepicker from 'vuejs-datepicker';
             return {
 
 
-        options: ['Laravel', 'Laravel 5', 'Vue JS', 'HDTuto.com', 'HDTuto.com', 'dsaf.com', 'were.com', 'rtrew.com'],
+        login: {
+                    loginweb: '',
+                    loginuser: '',
+                    loginpass: '',
+                    additional_information: '',
+                },
+                logins: [],
       columns: [
         {
           label: 'NPI',
@@ -666,6 +725,12 @@ import Datepicker from 'vuejs-datepicker';
     }
         },
         methods: {
+            addNewLogin: function () {
+                this.logins.push(Vue.util.extend({}, this.login))
+            },
+            removeLogin: function (index) {
+                Vue.delete(this.logins, index);
+            },
             onChange(e){
             console.log("slected file",e.target.files[0]);
               this.docform.file_name = e.target.files[0];
@@ -684,8 +749,10 @@ import Datepicker from 'vuejs-datepicker';
             editModal(row){
               this.editmode = true;
               this.form.reset();
+              this.logins = [];
               $('#addNew').modal('show');
               this.form.fill(row);
+              this.logins=row["logins"];
               this.form.selected_practices=row.practices.map(prac=>prac.id);
           },
             docModal(row){
@@ -698,6 +765,7 @@ import Datepicker from 'vuejs-datepicker';
             newModal(){
               this.editmode = false;
               this.form.reset();
+              this.logins = [];
               $('#addNew').modal('show');
           },
             forceRerender() {
@@ -745,7 +813,7 @@ import Datepicker from 'vuejs-datepicker';
           },
             createProvider(){
               this.$Progress.start();
-              
+              this.form.web_portals = this.logins;
               this.form.post('api/provider')
               .then((data)=>{
                 if(data.data.success){
@@ -775,6 +843,7 @@ import Datepicker from 'vuejs-datepicker';
           },
           updateProvider(){
               this.$Progress.start();
+              this.form.web_portals = this.logins;
               this.form.put('api/provider/'+this.form.id)
               .then((response) => {
                   // success

@@ -71799,6 +71799,11 @@ body.swal2-toast-column .swal2-toast .swal2-validation-message {
   padding-top: 10px;
 }
 
+.webportal_panel {
+  background-color: antiquewhite;
+  padding-top: 10px;
+}
+
 .section-heading {
   font-size: 14px;
   font-weight: bolder;

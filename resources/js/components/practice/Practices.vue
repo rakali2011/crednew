@@ -742,7 +742,7 @@
           },
           createPractice(){
               this.$Progress.start();
-              console.log(this.apartments);
+            //   console.log(this.apartments);
             //   this.form.append('service_addresses',JSON.stringify(this.apartments));
               this.form.service_address = this.apartments; 
             //   this.form.put('api/practice/'+this.form.id)

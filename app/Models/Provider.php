@@ -22,4 +22,7 @@ protected $table = "providers";
     public function documents() {
         return $this->hasMany(Document::class)->with('document_type');
     }
+    public function logins() {
+        return $this->hasMany(Login::class);
+    }
 }
