@@ -68,10 +68,15 @@ class PracticedocController extends BaseController
 //            $request->validate([
 //                'file_name' => 'mimes:pdf,jpeg,png,bmp,tiff |max:102400',
 //            ]);
-            $file = $request->file('file_name');
-            $name = time() . $file->getClientOriginalName();
-            $file->move(storage_path() . '/documents/practice', $name);
-        }
+            $files = $request->file('file_name');
+            dd($files);
+            foreach($files as $file){
+                $name = time() . $file->getClientOriginalName();
+                $file->move(storage_path() . '/documents/practice', $name);
+            }
+            // $name = time() . $file->getClientOriginalName();
+            // $file->move(storage_path() . '/documents/practice', $name);
+        
         $document = new Practicedoc;
 
         $document->practice_id = request('practice_id');
@@ -86,6 +91,8 @@ class PracticedocController extends BaseController
             $document->name = $name;
         }
         $document->save();
+    }
+
         return $this->sendResponse($document, 'Document Created Successfully');
         
     }

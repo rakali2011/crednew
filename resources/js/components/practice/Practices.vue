@@ -80,7 +80,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group input-group input-group-sm">
                                         <span class="input-group input-group-sm">Upload</span>
-                                        <input type="file" @change="onChange" name="file_name" class="">
+                                        <input type="file" @change="onChange" multiple="multiple" name="file_name[]" class="">
                                         <span v-if="errors && errors.file_name" class=" text-danger">&nbsp;&nbsp; Document is reqiured</span>
                                     </div>
                                 </div>
@@ -582,7 +582,7 @@
                 errors: {},
                 docform: new Form({
                     id : '',
-                    file_name : '',
+                    file_name : [],
                     selected_practice: [],
                     selected_doctype: [],
                     issue_date:'',
@@ -653,8 +653,13 @@
                 Vue.delete(this.apartments, index);
             },
             onChange(e){
+                this.docform.file_name =[];
                 //console.log("slected file",e.target.files[0]);
-                this.docform.file_name = e.target.files[0];
+                let files = e.target.files;
+                for(var a=0; a<e.target.files.length;a++){
+                    this.docform.file_name.push(files[a]);
+                }
+                // this.docform.file_name = e.target.files[0];
           },
           profileModal(row){
               $('#infoNew').modal('show');

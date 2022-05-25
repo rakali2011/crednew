@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\Practicedoc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -15,13 +16,26 @@ class DocumentController extends Controller {
 
     public function __construct(Document $document)
     {
-        
+        $this->middleware('auth');
         $this->document = $document;
     }
 
     public function show($id) {
         $document = $this->document->findOrFail($id);
         $file = storage_path() . "/documents/provider/" . $document->name;
+            return Response::file($file);
+        // if (auth()->user()->cant('view', $document)) {
+        //     return abort(403);
+        // } else {
+        //     $file = storage_path() . "/documents/provider/" . $document->name;
+        //     return Response::file($file);
+        // }
+    }
+
+    public function pshow($id) {
+        $pdoc = new Practicedoc;
+        $document = $pdoc->findOrFail($id);
+        $file = storage_path() . "/documents/practice/" . $document->name;
             return Response::file($file);
         // if (auth()->user()->cant('view', $document)) {
         //     return abort(403);

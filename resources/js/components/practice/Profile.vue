@@ -73,7 +73,7 @@
                                            <td>{{doc.name}}</td>
                                            <td>{{doc.issue_date}}</td>
                                            <td>{{doc.expiry_date}}</td>
-                                           <td><a href="#" pro_id="576" pay_id="11" data-toggle="modal" class="remark_detail_view">View</a></td>
+                                           <td><a :href="'/pdocument/' + doc.id" target="_blank">Show</a></td>
                                 </tr>
                             </tbody>
                         </table>

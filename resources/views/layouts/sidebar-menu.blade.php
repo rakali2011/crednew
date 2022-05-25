@@ -32,14 +32,14 @@
           </p>
         </router-link>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <router-link to="/documents" class="nav-link">
           <i class="nav-icon fas fa-file orange"></i>
           <p>
             Documents
           </p>
         </router-link>
-      </li>
+      </li> -->
       <li class="nav-item">
         <router-link to="/payers" class="nav-link">
           <i class="nav-icon fas fa-clipboard orange"></i>
