@@ -80,7 +80,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group input-group input-group-sm">
                                         <span class="input-group input-group-sm">Upload</span>
-                                        <input type="file" @change="onChange" multiple="multiple" name="file_name[]" class="">
+                                        <input type="file" @change="onChange" multiple="multiple" ref="inputFile" name="file_name[]" class="">
                                         <span v-if="errors && errors.file_name" class=" text-danger">&nbsp;&nbsp; Document is reqiured</span>
                                     </div>
                                 </div>
@@ -655,10 +655,13 @@
             onChange(e){
                 this.docform.file_name =[];
                 //console.log("slected file",e.target.files[0]);
+                // alert(e.target.files);
                 let files = e.target.files;
                 for(var a=0; a<e.target.files.length;a++){
+
                     this.docform.file_name.push(files[a]);
                 }
+                // console.log(this.docform.file_name);
                 // this.docform.file_name = e.target.files[0];
           },
           profileModal(row){
@@ -672,6 +675,7 @@
               this.editmode = false;
               this.docform.reset();
               this.docform.selected_practice=row.id;
+              this.$refs.inputFile.value = '';
               $('#docNew').modal('show');
               
           },
@@ -694,7 +698,9 @@
           editModal(practice){
               this.editmode = true;
               this.form.reset();
+              this.docform.reset();
               this.apartments = [];
+              
               $('#addNew').modal('show');
               this.form.fill(practice);
               this.apartments=practice["plocations"];
@@ -709,7 +715,9 @@
               this.errors = {};
               this.$Progress.start();
               let fb = new FormData();
-              fb.append('file_name',this.docform.file_name);
+              for (var i = 0; i < this.docform.file_name.length; i++) {
+                fb.append('file_name[]', this.docform.file_name[i]);
+              }
               fb.append('practice_id',this.docform.selected_practice);
               fb.append('document_type_id',this.docform.selected_doctype);
               fb.append('issue_date',this.docform.issue_date);
@@ -717,8 +725,10 @@
               axios.post('api/practicedoc',fb)
               
               .then((data)=>{
+                  
                 if(data.data.success){
                   $('#docNew').modal('hide');
+
 
                   Toast.fire({
                         icon: 'success',
@@ -755,7 +765,7 @@
               .then((data)=>{
                 if(data.data.success){
                   $('#addNew').modal('hide');
-
+                    // this.docform.file_name
                   Toast.fire({
                         icon: 'success',
                         title: data.data.message

@@ -83,7 +83,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group input-group input-group-sm">
                                         <span class="input-group input-group-sm">Upload</span>
-                                        <input type="file" @change="onChange" name="file_name" class="">
+                                        <input type="file" @change="onChange" multiple="multiple" ref="inputFile" name="file_name[]" class="">
                                         <span v-if="errors && errors.file_name" class=" text-danger">&nbsp;&nbsp; Document is reqiured</span>
                                     </div>
                                 </div>
@@ -192,7 +192,7 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">DOB</span>
-            <datepicker placeholder="Select Date" v-model="form.dob" input-class ="my-picker-class" name="dob" 
+            <datepicker placeholder="Select Date" v-model="form.dob" :format="customFormatter" input-class ="my-picker-class" name="dob" 
             class="form-control" :class="{ 'is-invalid': form.errors.has('dob') }" >
             </datepicker>
             <!-- <input v-model="form.dob" type="date" name="dob"
@@ -599,6 +599,7 @@ import Multiselect from 'vue-multiselect'
 import profile from "../../components/provider/Profile";
 import MaskedInput from 'vue-masked-input';
 import Datepicker from 'vuejs-datepicker';
+import moment from 'moment';
     export default {
         components: { VueGoodTable,profile,Multiselect,MaskedInput,Datepicker },
         data () {
@@ -650,7 +651,7 @@ import Datepicker from 'vuejs-datepicker';
                 errors: {},
                 docform: new Form({
                     id : '',
-                    file_name : '',
+                    file_name : [],
                     selected_provider: [],
                     selected_doctype: [],
                     issue_date:'',
@@ -725,6 +726,9 @@ import Datepicker from 'vuejs-datepicker';
     }
         },
         methods: {
+            customFormatter(date) {
+                return moment(date).format('MMMM Do YYYY');
+            },
             addNewLogin: function () {
                 this.logins.push(Vue.util.extend({}, this.login))
             },
@@ -732,11 +736,17 @@ import Datepicker from 'vuejs-datepicker';
                 Vue.delete(this.logins, index);
             },
             onChange(e){
-            console.log("slected file",e.target.files[0]);
-              this.docform.file_name = e.target.files[0];
+                this.docform.file_name =[];
+                let files = e.target.files;
+                for(var a=0; a<e.target.files.length;a++){
+
+                    this.docform.file_name.push(files[a]);
+                }
+            // console.log("slected file",e.target.files[0]);
+            //   this.docform.file_name = e.target.files[0];
           },
             onClickChild (value) {
-                console.log(value) // someValue
+                // console.log(value) // someValue
                 this.remarksData = value;
               },
             profileModal(row){
@@ -759,6 +769,7 @@ import Datepicker from 'vuejs-datepicker';
               this.editmode = false;
               this.docform.reset();
               this.docform.selected_provider=row.id;
+              this.$refs.inputFile.value = '';
               $('#docNew').modal('show');
               
           },
@@ -775,7 +786,9 @@ import Datepicker from 'vuejs-datepicker';
               this.errors = {};
               this.$Progress.start();
               let fb = new FormData();
-              fb.append('file_name',this.docform.file_name);
+              for (var i = 0; i < this.docform.file_name.length; i++) {
+                fb.append('file_name[]', this.docform.file_name[i]);
+              }
               fb.append('provider_id',this.docform.selected_provider);
               fb.append('document_type_id',this.docform.selected_doctype);
               fb.append('issue_date',this.docform.issue_date);

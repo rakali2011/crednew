@@ -115,8 +115,8 @@
                                            <td v-if="doc.document_type.type">{{doc.document_type.type}}</td>
                                            <td v-else></td>
                                            <td>{{doc.name}}</td>
-                                           <td>{{doc.issue_date}}</td>
-                                           <td>{{doc.expiry_date}}</td>
+                                           <td>{{doc.issue_date | usDate}}</td>
+                                           <td>{{doc.expiry_date | usDate}}</td>
                                            <td><a :href="'/document/' + doc.id" target="_blank">Show</a></td>
                                 </tr>
                             </tbody>

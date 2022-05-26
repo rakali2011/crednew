@@ -65,17 +65,13 @@ class DocumentController extends BaseController
             'expiry_date' => 'max:255',
         ]);
         $request->validate([
-            'file_name' => 'required|file|max:5120',
+            'file_name' => 'required',
         ]);
-
-        if ($request->hasfile('file_name')) {
-//            $request->validate([
-//                'file_name' => 'mimes:pdf,jpeg,png,bmp,tiff |max:102400',
-//            ]);
-            $file = $request->file('file_name');
+        $files = $request["file_name"];
+        foreach($files as $file){
             $name = time() . $file->getClientOriginalName();
             $file->move(storage_path() . '/documents/provider', $name);
-        }
+        
         $document = new Document;
 
         $document->provider_id = request('provider_id');
@@ -85,12 +81,10 @@ class DocumentController extends BaseController
 //        $document->expiry_date = $this->validateDate(request('expiry_date')) ? date('Y-m-d', strtotime(request('expiry_date'))) : NULL;
         $document->issue_date = request('issue_date');
         $document->expiry_date = request('expiry_date');
-
-        if ($request->hasfile('file_name')) {
-            $document->name = $name;
-        }
+        $document->name = $name;
         $document->save();
-        return $this->sendResponse($document, 'Document Created Successfully');
+    }
+        return $this->sendResponse("", 'Document Created Successfully');
         
     }
 
