@@ -90,16 +90,18 @@
                                 <div class="col-sm-6">
                                     <div class="form-group input-group input-group-sm">
                                         <span class="input-group input-group-sm">Issue Date</span>
-                                        <input v-model="docform.issue_date" type="date" name="issue_date"
-                                            class="form-control" :class="{ 'is-invalid': form.errors.has('issue_date') }">
+                                        <datepicker placeholder="Select Date" v-model="docform.issue_date" :format="customFormatter" input-class ="my-picker-class" name="issue_date" 
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('issue_date') }" >
+                                        </datepicker>
                                         <has-error :form="form" field="issue_date"></has-error>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group input-group input-group-sm">
                                         <span class="input-group input-group-sm">Expiry Date</span>
-                                        <input v-model="docform.expiry_date" type="date" name="expiry_date"
-                                            class="form-control" :class="{ 'is-invalid': form.errors.has('expiry_date') }">
+                                        <datepicker placeholder="Select Date" v-model="docform.expiry_date" :format="customFormatter" input-class ="my-picker-class" name="expiry_date" 
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('expiry_date') }" >
+                                        </datepicker>
                                         <has-error :form="form" field="expiry_date"></has-error>
                                     </div>
                                 </div>
@@ -590,6 +592,7 @@
 <style>
         .my-picker-class{
             border: none !important;
+            width: 100%;
            }
     </style>
 <script>
@@ -791,8 +794,8 @@ import moment from 'moment';
               }
               fb.append('provider_id',this.docform.selected_provider);
               fb.append('document_type_id',this.docform.selected_doctype);
-              fb.append('issue_date',this.docform.issue_date);
-              fb.append('expiry_date',this.docform.expiry_date);
+              fb.append('issue_date',moment(this.docform.issue_date).format('YYYY-MM-DD'));
+              fb.append('expiry_date',moment(this.docform.expiry_date).format('YYYY-MM-DD'));
               axios.post('api/document',fb)
               
               .then((data)=>{

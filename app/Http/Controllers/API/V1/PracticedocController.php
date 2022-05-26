@@ -77,8 +77,8 @@ class PracticedocController extends BaseController
         $document->user_id = auth()->user()->id;
 //        $document->issue_date = $this->validateDate(request('issue_date')) ? date('Y-m-d', strtotime(request('issue_date'))) : NULL;
 //        $document->expiry_date = $this->validateDate(request('expiry_date')) ? date('Y-m-d', strtotime(request('expiry_date'))) : NULL;
-        $document->issue_date = request('issue_date');
-        $document->expiry_date = request('expiry_date');
+        $document->issue_date = date('Y-m-d', strtotime(request('issue_date')));
+        $document->expiry_date = date('Y-m-d', strtotime(request('expiry_date')));
         $document->name = $name;
         // if ($request->hasfile('file_name')) {
         //     $document->name = $name;

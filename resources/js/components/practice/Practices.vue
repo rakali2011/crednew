@@ -87,16 +87,19 @@
                                 <div class="col-sm-6">
                                     <div class="form-group input-group input-group-sm">
                                         <span class="input-group input-group-sm">Issue Date</span>
-                                        <input v-model="docform.issue_date" type="date" name="issue_date"
-                                            class="form-control" :class="{ 'is-invalid': form.errors.has('issue_date') }">
+                                        <datepicker placeholder="Select Date" v-model="docform.issue_date" :format="customFormatter" input-class ="my-picker-class" name="issue_date" 
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('issue_date') }" >
+                                        </datepicker>
+                                        
                                         <has-error :form="form" field="issue_date"></has-error>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group input-group input-group-sm">
                                         <span class="input-group input-group-sm">Expiry Date</span>
-                                        <input v-model="docform.expiry_date" type="date" name="expiry_date"
-                                            class="form-control" :class="{ 'is-invalid': form.errors.has('expiry_date') }">
+                                        <datepicker placeholder="Select Date" v-model="docform.expiry_date" :format="customFormatter" input-class ="my-picker-class" name="expiry_date" 
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('expiry_date') }" >
+                                        </datepicker>
                                         <has-error :form="form" field="expiry_date"></has-error>
                                     </div>
                                 </div>
@@ -525,6 +528,7 @@
     import profile from "../../components/practice/Profile";
     import MaskedInput from 'vue-masked-input';
     import Datepicker from 'vuejs-datepicker';
+    import moment from 'moment';
     export default {
       components: {
           VueGoodTable,profile,Multiselect,MaskedInput,Datepicker
@@ -626,23 +630,25 @@
             }
         },
         methods: {
+            customFormatter(date) {
+                return moment(date).format('MMMM Do YYYY');
+            },
             
             keymonitor: function (e,len) {
                 
                 var length = e.target.value.length;
-       if(length > len) {
-            e.preventDefault();
-       } else if(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-            e.preventDefault();
-       } else if((length == 0) && (e.which == 48)) {
-            e.preventDefault();
-       }
+                if(length > len) {
+                        e.preventDefault();
+                } else if(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                        e.preventDefault();
+                } else if((length == 0) && (e.which == 48)) {
+                        e.preventDefault();
+                }
             },
             phoneNumber() {
-                
-        var x = this.form.owner_phone.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-  this.form.owner_phone = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-    },
+                var x = this.form.owner_phone.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+                this.form.owner_phone = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+            },
     
             
 
@@ -720,8 +726,8 @@
               }
               fb.append('practice_id',this.docform.selected_practice);
               fb.append('document_type_id',this.docform.selected_doctype);
-              fb.append('issue_date',this.docform.issue_date);
-              fb.append('expiry_date',this.docform.expiry_date);
+              fb.append('issue_date',moment(this.docform.issue_date).format('YYYY-MM-DD'));
+              fb.append('expiry_date',moment(this.docform.expiry_date).format('YYYY-MM-DD'));
               axios.post('api/practicedoc',fb)
               
               .then((data)=>{
