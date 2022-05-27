@@ -71795,11 +71795,16 @@ body.swal2-toast-column .swal2-toast .swal2-validation-message {
 }
 
 .addr_panel {
-  background-color: aliceblue;
+  background-color: lightblue;
   padding-top: 10px;
 }
 
 .webportal_panel {
+  background-color: antiquewhite;
+  padding-top: 10px;
+}
+
+.address_panel {
   background-color: antiquewhite;
   padding-top: 10px;
 }

@@ -431,6 +431,70 @@
     </div>
     
 </div>
+<div class="row address_panel">
+
+    <div class="form-group col-sm-6">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Billing Address</span>
+                <input v-model="form.bill_address" type="text" name="bill_address"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('bill_address') }">
+                <has-error :form="form" field="bill_address"></has-error>            
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">City</span>
+            <input v-model="form.bill_city" type="text" name="bill_city"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('bill_city') }">
+            <has-error :form="form" field="bill_city"></has-error>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">State</span>
+            <input v-model="form.bill_state" type="text" name="bill_state"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('bill_state') }">
+            <has-error :form="form" field="bill_state"></has-error>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Zip</span>
+            <masked-input v-model="form.bill_zip" mask="11111" name="bill_zip" class="form-control" :class="{ 'is-invalid': form.errors.has('bill_zip') }" />
+            <!-- <input v-model="form.bill_zip" type="text" v-on:keypress="keymonitor($event, 4)"  name="bill_zip"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('bill_zip') }"> -->
+            <has-error :form="form" field="bill_zip"></has-error>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Fax</span>
+            <masked-input v-model="form.bill_fax" mask="\+\1 (111) 111-1111" name="bill_fax" class="form-control" :class="{ 'is-invalid': form.errors.has('bill_fax') }" />
+            <!-- <input v-model="form.bill_fax" type="text" name="bill_fax"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('bill_fax') }"> -->
+            <has-error :form="form" field="bill_fax"></has-error>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">Phone</span>
+            <masked-input v-model="form.bill_phone" mask="\+\1 (111) 111-1111" name="bill_phone" class="form-control" :class="{ 'is-invalid': form.errors.has('bill_phone') }" />
+            <!-- <input v-model="form.bill_phone" type="text" name="bill_phone"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('bill_phone') }"> -->
+            <has-error :form="form" field="bill_phone"></has-error>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">County</span>
+            <input v-model="form.bill_county" type="text" name="bill_county"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('bill_county') }">
+            <has-error :form="form" field="bill_county"></has-error>
+        </div>
+    </div>
+    
+</div>
 <div class="row">
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
@@ -619,6 +683,13 @@
                     pay_zip: '',
                     pay_phone: '',
                     pay_county: '',
+                    bill_address: '',
+                    bill_city: '',
+                    bill_state: '',
+                    bill_fax: '',
+                    bill_zip: '',
+                    bill_phone: '',
+                    bill_county: '',
                     contact1_name: '',
                     contact1_email: '',
                     contact1_phone: '',

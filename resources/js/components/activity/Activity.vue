@@ -102,6 +102,7 @@
                                         </span>
                                         <select class="form-control" v-model="form.reference_no" name="reference_no"  >
                                             <option value="Through Call" >Through Call</option>
+                                            <option value="Through Fax" >Through Fax</option>
                                             <option value="Through Email" >Through Email</option>
                                         </select>
                                     </div>
