@@ -10,6 +10,7 @@ export default [
     { path: '/activity', component: require('./components/activity/Activity.vue').default },
     { path: '/report/appstatus', component: require('./components/report/Appstatus.vue').default },
     { path: '/report/productivity', component: require('./components/report/Productivity.vue').default },
+    { path: '/report/productivitynew', component: require('./components/report/Productivitynew.vue').default },
     { path: '/report/export', component: require('./components/report/Export.vue').default },
     { path: '/products', component: require('./components/product/Products.vue').default },
     { path: '/practices', component: require('./components/practice/Practices.vue').default },

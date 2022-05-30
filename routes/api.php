@@ -42,6 +42,7 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
     Route::get('dashboard_counts', 'GeneralController@dashboard_counts');
     Route::post('allprovidersstatus', 'ProviderController@allProvidersStatus' )->name('allprovidersstatus');
     Route::post('allusersactivity', 'ActivityController@allUsersActivity' );
+    Route::post('allusersactivitynew', 'ActivityController@allUsersActivityNew' );
     Route::post('product/upload', 'ProductController@upload');
     Route::post('quickupdate-form-submit', 'QuickupdateController@update');
     Route::get('getRemarks', 'RemarkController@all');

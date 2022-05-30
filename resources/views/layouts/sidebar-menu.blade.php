@@ -9,6 +9,12 @@
         </router-link>
       </li>
       <li class="nav-item">
+                  <router-link to="/report/productivitynew" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Activity Report</p>
+                  </router-link>
+              </li>
+      <li class="nav-item">
         <router-link to="/quickupdates" class="nav-link">
           <i class="nav-icon fas fa-edit orange"></i>
           <p>

@@ -73,6 +73,7 @@ class ActivityController extends BaseController
         $activity->email = auth()->user()->email;
 //        $activity->action = $validatedData['action'];
         $activity->description = $validatedData['description'];
+        $activity->submitted_at = date("m-d-Y");
 
         $activity->save();
         return $this->sendResponse($activity, 'Activity Created Successfully');
@@ -127,5 +128,39 @@ class ActivityController extends BaseController
         $activities = $this->activity->get();
 //        dd($apps->count());
         return $this->sendResponse($activities, 'Activity list');
+    }
+    public function allUsersActivityNew(Request $request){
+        
+        $recordsTotal = $this->activity->count();
+        $start = $request->input('page');
+        $length = $request->input('pageSize');
+        $search = $request->input('search');
+
+        $start = ($start * $length) - $length;
+        if($start<0){
+            $start=0;
+        }
+        
+        $limit = $length;
+        if($limit<0){
+            $limit=9999999;
+        }
+        $filter = array(
+            "start" => $start,
+            "limit" => $limit,
+            "search" => $search,
+        );
+
+        $activities = $this->activity->getActivities($filter);
+
+//        dd($apps->count());
+        $recordsFiltered = $recordsTotal;
+        $json_data = array(
+            "recordsTotal" => $recordsTotal,
+            "recordsFiltered" => $recordsFiltered,
+            "data" => $activities
+        );
+
+        return $this->sendResponse($json_data, 'Activity list');
     }
 }

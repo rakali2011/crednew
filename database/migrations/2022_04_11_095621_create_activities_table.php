@@ -15,14 +15,22 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('provider_name');
+            $table->string('practice_name')->nullable();
+            $table->string('provider_name')->nullable();
             $table->string('payer');
             $table->string('user');
             $table->integer('user_id');
             $table->string('email');
-            $table->string('action');
-            $table->text('description');
+            $table->string('enrollment_credentialing')->nullable();
+            $table->string('era_eft_edi_portal')->nullable();
+            $table->string('initiated_followup')->nullable();
+            $table->string('initiated_date')->nullable();
+            $table->string('followup_date')->nullable();
+            $table->string('reference_no')->nullable();
+            $table->string('action')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
