@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Requests\Practices\PracticeRequest;
 use App\Models\Practice;
 use App\Models\Plocation;
+use App\Models\Plogin;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -192,6 +193,22 @@ class PracticeController extends BaseController
                 $plocation->service_zip =$address["service_zip"];
                 
                 $plocation->save();
+            }
+        }
+        $practice->plogins()->delete();
+        if (($request->get('web_portals'))) {
+            foreach ($request->get('web_portals') as $key => $portal) {
+                if($portal["loginweb"]=="" && $portal["loginuser"]==""){
+                    continue;
+                }
+                
+                $login = new Plogin;
+                $login->practice_id = $practice->id;
+                $login->loginweb = $portal["loginweb"];
+                $login->loginuser = $portal["loginuser"];
+                $login->loginpass = $portal["loginpass"];
+                $login->additional_information = $portal["additional_information"];
+                $login->save();
             }
         }
 

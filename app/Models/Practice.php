@@ -27,4 +27,7 @@ protected  $table = "practices";
     public function plocations() {
         return $this->hasMany(Plocation::class);
     }
+    public function plogins() {
+        return $this->hasMany(PLogin::class);
+    }
 }

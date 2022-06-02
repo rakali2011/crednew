@@ -495,6 +495,59 @@
     </div>
     
 </div>
+<!--Web portal starts-->
+    <div class="row">
+        <div class="col-sm-3">
+            <button type="button" v-on:click="addNewLogin" class="btn btn-sm btn-success">
+                Add Web Portals
+            </button>
+        </div>
+        <div class="col-sm-9">
+            You can add multiple web portals.
+        </div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div v-for="(login, index) in logins">
+        <div class="row webportal_panel">
+            <div class="col-sm-2">
+                <div class="form-group input-group input-group-sm">
+                <span class="input-group input-group-sm">&nbsp;</span>
+                <button type="button" v-on:click="removeLogin(index)" class="btn btn-sm btn-danger">
+                    Remove
+                </button>
+                </div>
+            </div>
+            <div class="form-group col-sm-4">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">Web Portal Name</span>
+                        <input v-model="login.loginweb" type="text" name="logins[][loginweb]"
+                        class="form-control">            
+                </div>
+            </div>
+            <div class="form-group col-sm-3">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">User Name</span>
+                        <input v-model="login.loginuser" type="text"
+                        name="logins[][loginuser]" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-sm-3">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">Password</span>
+                        <input v-model="login.loginpass" type="text"
+                        name="logins[][loginpass]" class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-sm-12">
+                <div class="form-group input-group input-group-sm">
+                    <span class="input-group input-group-sm">Security Question/Notes</span>
+                        <input v-model="login.additional_information" type="text"
+                        name="logins[][additional_information]" class="form-control">
+                </div>
+            </div>
+            
+        </div>
+    </div>
 <div class="row">
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
@@ -599,6 +652,13 @@
         },
         data () {
             return {
+                login: {
+                    loginweb: '',
+                    loginuser: '',
+                    loginpass: '',
+                    additional_information: '',
+                },
+                logins: [],
                 apartment: {
                     service_address: '',
                     service_city: '',
@@ -704,6 +764,12 @@
             customFormatter(date) {
                 return moment(date).format('MMMM Do YYYY');
             },
+            addNewLogin: function () {
+                this.logins.push(Vue.util.extend({}, this.login))
+            },
+            removeLogin: function (index) {
+                Vue.delete(this.logins, index);
+            },
             
             keymonitor: function (e,len) {
                 
@@ -777,9 +843,10 @@
               this.form.reset();
               this.docform.reset();
               this.apartments = [];
-              
+              this.logins = [];
               $('#addNew').modal('show');
               this.form.fill(practice);
+              this.logins=practice["logins"];
               this.apartments=practice["plocations"];
           },
           newModal(){
@@ -869,9 +936,10 @@
           },
           updatePractice(){
               this.$Progress.start();
-              console.log(this.apartments);
+            //   console.log(this.apartments);
             //   this.form.append('service_addresses',JSON.stringify(this.apartments));
               this.form.service_address = this.apartments; 
+              this.form.web_portals = this.logins;
               this.form.put('api/practice/'+this.form.id)
               .then((response) => {
                   // success
