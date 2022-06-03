@@ -79,6 +79,30 @@
                         </table>
                     </div>
                 </div>
+                
+                <div class="section-heading">Providers</div>
+                <div class="provider_formbox">
+                    <div class="form-group">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>NPI</th>
+                                    <th>SSN</th>
+                                    <th>Tax ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for='(pro, index) in listdata.providers'>
+                                           <td>{{pro.full_name}}</td>
+                                           <td>{{pro.individual_npi}}</td>
+                                           <td>{{pro.ssn}}</td>
+                                           <td>{{pro.tax_id}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div>
                 </div>

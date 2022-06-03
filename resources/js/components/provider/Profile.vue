@@ -37,6 +37,12 @@
                         <div class="col-sm-3">
                                 <span class="input-group input-group-sm">{{listdata.tax_id}}</span>
                         </div>
+                        <div class="col-sm-3">
+                                <span class="input-group input-group-sm"><strong>DOB:</strong></span>
+                        </div>
+                        <div class="col-sm-3">
+                                <span class="input-group input-group-sm">{{listdata.dob  | usDate}}</span>
+                        </div>
                     </div>
                 </div>
                 <div class="section-heading">CAQH/PECOS</div>

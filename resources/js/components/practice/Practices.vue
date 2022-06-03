@@ -496,6 +496,7 @@
     
 </div>
 <!--Web portal starts-->
+    <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-sm-3">
             <button type="button" v-on:click="addNewLogin" class="btn btn-sm btn-success">
@@ -508,7 +509,7 @@
     </div>
     <div class="row">&nbsp;</div>
     <div v-for="(login, index) in logins">
-        <div class="row webportal_panel">
+        <div class="row addr_panel">
             <div class="col-sm-2">
                 <div class="form-group input-group input-group-sm">
                 <span class="input-group input-group-sm">&nbsp;</span>
@@ -846,7 +847,7 @@
               this.logins = [];
               $('#addNew').modal('show');
               this.form.fill(practice);
-              this.logins=practice["logins"];
+              this.logins=practice["plogins"];
               this.apartments=practice["plocations"];
           },
           newModal(){

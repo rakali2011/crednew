@@ -30,7 +30,7 @@ class PracticeController extends BaseController
      */
     public function index()
     {
-        $practices = $this->practice->latest()->get()->load("documents")->load("plocations");
+        $practices = $this->practice->latest()->get()->load("documents")->load("providers")->load("plocations")->load("plogins");
         return $this->sendResponse($practices, 'Practice list');
     }
         /**

@@ -287,14 +287,14 @@
     </div>
     
     
-    <div class="col-sm-3">
+    <!-- <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">Medicaid User</span>
             <input v-model="form.medicaid_user" type="text" name="medicaid_user"
                 class="form-control" :class="{ 'is-invalid': form.errors.has('medicaid_user') }">
             <has-error :form="form" field="medicaid_user"></has-error>
         </div>
-    </div>
+    </div> -->
     
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
@@ -446,7 +446,7 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">DEA Effective</span>
-            <datepicker placeholder="Select Date" v-model="form.dea_effective_date" name="dea_effective_date" input-class ="my-picker-class" 
+            <datepicker placeholder="Select Date" v-model="form.dea_effective_date" :format="customFormatter" name="dea_effective_date" input-class ="my-picker-class" 
             class="form-control" :class="{ 'is-invalid': form.errors.has('dea_effective_date') }" >
             </datepicker>
             <!-- <input v-model="form.dea_effective_date" type="date" name="dea_effective_date"
@@ -457,7 +457,7 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">DEA Expiry</span>
-            <datepicker placeholder="Select Date" v-model="form.dea_expiry_date" name="dea_expiry_date" input-class ="my-picker-class" 
+            <datepicker placeholder="Select Date" v-model="form.dea_expiry_date" :format="customFormatter" name="dea_expiry_date" input-class ="my-picker-class" 
             class="form-control" :class="{ 'is-invalid': form.errors.has('dea_expiry_date') }" >
             </datepicker>
             <!-- <input v-model="form.dea_expiry_date" type="date" name="dea_expiry_date"
@@ -484,7 +484,7 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">CDS Effective</span>
-            <datepicker placeholder="Select Date" v-model="form.cds_effective_date" name="cds_effective_date" input-class ="my-picker-class" 
+            <datepicker placeholder="Select Date" v-model="form.cds_effective_date" :format="customFormatter" name="cds_effective_date" input-class ="my-picker-class" 
             class="form-control" :class="{ 'is-invalid': form.errors.has('cds_effective_date') }" >
             </datepicker>
             <!-- <input v-model="form.cds_effective_date" type="date" name="cds_effective_date"
@@ -495,7 +495,7 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">CDS Expiry</span>
-            <datepicker placeholder="Select Date" v-model="form.cds_expiry_date" name="cds_expiry_date" input-class ="my-picker-class" 
+            <datepicker placeholder="Select Date" v-model="form.cds_expiry_date" :format="customFormatter" name="cds_expiry_date" input-class ="my-picker-class" 
             class="form-control" :class="{ 'is-invalid': form.errors.has('cds_expiry_date') }" >
             </datepicker>
             <!-- <input v-model="form.cds_expiry_date" type="date" name="cds_expiry_date"
@@ -522,7 +522,7 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">License Effective</span>
-            <datepicker placeholder="Select Date" v-model="form.state_license_date" name="state_license_date" input-class ="my-picker-class" 
+            <datepicker placeholder="Select Date" v-model="form.state_license_date" :format="customFormatter" name="state_license_date" input-class ="my-picker-class" 
             class="form-control" :class="{ 'is-invalid': form.errors.has('state_license_date') }" >
             </datepicker>
             <!-- <input v-model="form.state_license_date" type="date" name="state_license_date"
@@ -533,7 +533,7 @@
     <div class="col-sm-3">
         <div class="form-group input-group input-group-sm">
             <span class="input-group input-group-sm">License Expiry</span>
-            <datepicker placeholder="Select Date" v-model="form.state_license_expiry" name="state_license_expiry" input-class ="my-picker-class" 
+            <datepicker placeholder="Select Date" v-model="form.state_license_expiry" :format="customFormatter" name="state_license_expiry" input-class ="my-picker-class" 
             class="form-control" :class="{ 'is-invalid': form.errors.has('state_license_expiry') }" >
             </datepicker>
             <!-- <input v-model="form.state_license_expiry" type="date" name="state_license_expiry"
