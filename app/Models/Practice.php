@@ -28,6 +28,6 @@ protected  $table = "practices";
         return $this->hasMany(Plocation::class);
     }
     public function plogins() {
-        return $this->hasMany(PLogin::class);
+        return $this->hasMany(Plogin::class);
     }
 }
