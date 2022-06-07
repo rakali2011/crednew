@@ -26,8 +26,7 @@ Route::get('/practiceprovider/export/{id}', [App\Http\Controllers\ExportControll
 
 Route::get('/document/{id}', [App\Http\Controllers\DocumentController::class, 'show']);
 Route::get('/pdocument/{id}', [App\Http\Controllers\DocumentController::class, 'pshow']);
-
-
+Route::get('pdocument/delete/{id}', [App\Http\Controllers\DocumentController::class, 'destroy']);
 
 
 Route::get('home', function () {

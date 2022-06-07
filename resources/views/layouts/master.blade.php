@@ -22,7 +22,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
       </li>
     </ul>
-    <h3>Credentialing Management System</h3>
+    <h3>PRG Credentialing Management System</h3>
     <!-- SEARCH FORM -->
 <!--    <form class="form-inline ml-3">
       <div class="input-group input-group-sm">

@@ -73,7 +73,7 @@
                                            <td>{{doc.name}}</td>
                                            <td>{{doc.issue_date | usDate}}</td>
                                            <td>{{doc.expiry_date | usDate}}</td>
-                                           <td><a :href="'/pdocument/' + doc.id" target="_blank">Show</a></td>
+                                           <td><a :href="'/pdocument/' + doc.id" target="_blank">Show</a>&nbsp;<a @click="delDoc(doc.id)" >Delete</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -126,6 +126,33 @@ export default {
 		}
 	},
 	methods:{
+                  delDoc(id){
+              Swal.fire({
+                  title: 'Are you sure?',
+                  text: "You won't be able to revert this!",
+                  showCancelButton: true,
+                  confirmButtonColor: '#d33',
+                  cancelButtonColor: '#3085d6',
+                  confirmButtonText: 'Yes, delete it!'
+                  }).then((result) => {
+// :href="'/pdocument/delete/' + doc.id"
+                      // Send request to the server
+                        if (result.value) {
+                              axios.delete('api/practicedoc/'+id).then(()=>{
+                                      Swal.fire(
+                                      'Deleted!',
+                                      'Your document has been deleted.',
+                                      'success'
+                                      );
+                                  // Fire.$emit('AfterCreate');
+                                //   this.loadProviders();
+                                 $('#infoNew').modal('hide');
+                              }).catch((data)=> {
+                                  Swal.fire("Failed!", data.message, "warning");
+                              });
+                        }
+                  })
+          },
                 remarksModal: function (pro_id,pay_id) {
                 axios.get('api/getRemarks?pro_id='+pro_id+'&pay_id='+pay_id).then(function (res) {
                     

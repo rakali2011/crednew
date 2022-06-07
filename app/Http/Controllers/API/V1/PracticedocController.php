@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Models\Practicedoc;
 use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\File;
+// use File;
 
 class PracticedocController extends BaseController
 {
@@ -130,8 +132,28 @@ class PracticedocController extends BaseController
      * @param  \App\Models\Practicedoc  $practicedoc
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Practicedoc $practicedoc)
+    // public function destroy(Practicedoc $practicedoc)
+    // {
+    //     //
+    // }
+    public function destroy($id)
     {
-        //
+        $this->authorize('isAdmin');
+        $document = $this->practicedoc->findOrFail($id);
+        $file = storage_path() . "/documents/practice/" . $document->name;
+
+    // if (File::exists($file)) {
+    //     //File::delete($image_path);
+    //     unlink($file);
+    // }
+    unlink($file);
+    $document->delete();
+        return $this->sendResponse($document, 'Document has been Deleted');
     }
+
+    
+        
+        
+
+
 }

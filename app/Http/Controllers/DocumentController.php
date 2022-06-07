@@ -44,6 +44,7 @@ class DocumentController extends Controller {
         //     return Response::file($file);
         // }
     }
+    
 
     public function download(Document $document) {
         dd($document->name);
