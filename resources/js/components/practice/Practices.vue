@@ -287,6 +287,14 @@
             <has-error :form="form" field="clearing_house_password"></has-error>
         </div>
     </div>
+    <div class="col-sm-3">
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group input-group-sm">RR Ptan</span>
+            <input v-model="form.rr_ptan" type="text" name="rr_ptan"
+                class="form-control" :class="{ 'is-invalid': form.errors.has('rr_ptan') }">
+            <has-error :form="form" field="rr_ptan"></has-error>
+        </div>
+    </div>
     
 </div>
 
@@ -737,6 +745,7 @@
                     clearing_house_name : '',
                     clearing_house_user : '',
                     clearing_house_password : '',
+                    rr_ptan : '',
                     pay_address: '',
                     pay_city: '',
                     pay_state: '',

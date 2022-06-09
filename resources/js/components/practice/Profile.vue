@@ -73,7 +73,7 @@
                                            <td>{{doc.name}}</td>
                                            <td>{{doc.issue_date | usDate}}</td>
                                            <td>{{doc.expiry_date | usDate}}</td>
-                                           <td><a :href="'/pdocument/' + doc.id" target="_blank">Show</a>&nbsp;<a @click="delDoc(doc.id)" >Delete</a></td>
+                                           <td><a :href="'/pdocument/' + doc.id" target="_blank">View</a>&nbsp;<a href="#" @click="delDoc(doc.id)" >Delete</a></td>
                                 </tr>
                             </tbody>
                         </table>

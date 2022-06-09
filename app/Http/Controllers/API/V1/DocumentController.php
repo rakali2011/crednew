@@ -133,8 +133,18 @@ class DocumentController extends BaseController
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Document $document)
+    public function destroy($id)
     {
-        //
+        $this->authorize('isAdmin');
+        $document = $this->document->findOrFail($id);
+        $file = storage_path() . "/documents/provider/" . $document->name;
+
+    // if (File::exists($file)) {
+    //     //File::delete($image_path);
+    //     unlink($file);
+    // }
+    unlink($file);
+    $document->delete();
+        return $this->sendResponse($document, 'Document has been Deleted');
     }
 }

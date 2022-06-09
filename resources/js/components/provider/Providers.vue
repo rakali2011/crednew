@@ -839,8 +839,9 @@ import moment from 'moment';
                         icon: 'success',
                         title: data.message
                     });
+                    
                   this.$Progress.finish();
-                  this.forceRerender();
+                  this.loadProviders();
                 } else {
                   Toast.fire({
                       icon: 'error',
