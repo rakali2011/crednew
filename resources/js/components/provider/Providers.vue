@@ -578,7 +578,7 @@
                                       <tr v-for='(remark, index) in remarksData'>
                                         <td>{{ remark.created_at | myDate }}</td>
                                         <td>{{ remark.user.name }}</td>
-                                        <td>{{ remark.remarks }}</td>
+                                        <td contenteditable="true" @blur="updateRemarks($event,remark.id)">{{ remark.remarks }}</td>
                                       </tr>
                                     </tbody>
                                 </table>
@@ -729,6 +729,26 @@ import moment from 'moment';
     }
         },
         methods: {
+            updateRemarks(e,id){
+                this.$Progress.start();
+              this.form.remarks = e.target.innerHTML;
+              this.form.put('api/remarks/'+id)
+              .then((response) => {
+                  // success
+                  $('#addNew').modal('hide');
+                  Toast.fire({
+                    icon: 'success',
+                    title: response.data.message
+                  });
+                  this.$Progress.finish();
+                      //  Fire.$emit('AfterCreate');
+                //   this.loadProviders();
+              })
+              .catch(() => {
+                  this.$Progress.fail();
+              });
+
+        },
             customFormatter(date) {
                 return moment(date).format('MMMM Do YYYY');
             },

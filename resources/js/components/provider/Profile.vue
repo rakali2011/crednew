@@ -152,6 +152,7 @@ export default {
 		}
 	},
 	methods:{
+        
         delDoc(id){
               Swal.fire({
                   title: 'Are you sure?',

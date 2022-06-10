@@ -379,7 +379,7 @@
 
     <div class="form-group col-sm-6">
         <div class="form-group input-group input-group-sm">
-            <span class="input-group input-group-sm">Pay Address</span>
+            <span class="input-group input-group-sm">Mailing Address (<a href="#"  @click="updateMailing">Click if same as service addr?</a>)</span>
                 <input v-model="form.pay_address" type="text" name="pay_address"
                 class="form-control" :class="{ 'is-invalid': form.errors.has('pay_address') }">
                 <has-error :form="form" field="pay_address"></has-error>            
@@ -771,6 +771,17 @@
             }
         },
         methods: {
+            updateMailing(){
+                if(this.apartments[0]){
+                this.form.pay_address=this.apartments[0].service_address;
+                this.form.pay_city=this.apartments[0].service_city;
+                this.form.pay_state=this.apartments[0].service_state;
+                this.form.pay_fax=this.apartments[0].service_fax;
+                this.form.pay_zip=this.apartments[0].service_zip;
+                this.form.pay_phone=this.apartments[0].service_phone;
+                this.form.pay_county=this.apartments[0].service_county;
+                }
+            },
             customFormatter(date) {
                 return moment(date).format('MMMM Do YYYY');
             },
