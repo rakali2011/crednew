@@ -56,6 +56,7 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
         'quickupdate' => 'QuickupdateController',
         'document' => 'DocumentController',
         'practicedoc' => 'PracticedocController',
+        'remarks' => 'RemarkController',
         'payer' => 'PayerController',
         'category' => 'CategoryController',
         'tag' => 'TagController',

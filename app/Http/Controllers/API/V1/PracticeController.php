@@ -127,6 +127,7 @@ class PracticeController extends BaseController
                 $plocation = new Plocation;
                 $plocation->practice_id = $practice->id;
                 $plocation->service_address = $address["service_address"];
+                $plocation->service_primary = $address["service_primary"];
                 $plocation->service_city = $address["service_city"];
                 $plocation->service_county = $address["service_county"];
                 $plocation->service_fax = $address["service_fax"];
@@ -186,13 +187,14 @@ class PracticeController extends BaseController
                 $plocation = new Plocation;
                 $plocation->practice_id = $practice->id;
                 $plocation->service_address = $address["service_address"];
+                $plocation->service_primary = $address["service_primary"];
                 $plocation->service_city = $address["service_city"];
                 $plocation->service_county = $address["service_county"];
                 $plocation->service_fax = $address["service_fax"];
                 $plocation->service_phone = $address["service_phone"];
                 $plocation->service_state = $address["service_state"];
                 $plocation->service_zip =$address["service_zip"];
-                
+                // dd($plocation);
                 $plocation->save();
             }
         }

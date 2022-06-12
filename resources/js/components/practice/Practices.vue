@@ -310,7 +310,7 @@
     </div>
     <div class="row">&nbsp;</div>
     <div v-for="(apartment, index) in apartments">
-        <div class="row">
+        <div class="row address_panel">
             <div class="col-sm-2">
                 <div class="form-group input-group input-group-sm">
                 <span class="input-group input-group-sm">&nbsp;</span>
@@ -319,7 +319,14 @@
                 </button>
                 </div>
             </div>
-            <div class="form-group col-sm-6">
+            <div class="col-sm-1">
+                <div class="form-group input-group input-group-sm">
+                <span class="input-group input-group-sm">Primary</span>
+                <input v-model="apartment.service_primary" type="checkbox" name="apartments[][service_primary]"
+                        class="form-control">
+                </div>
+            </div>
+            <div class="form-group col-sm-5">
                 <div class="form-group input-group input-group-sm">
                     <span class="input-group input-group-sm">Service Address</span>
                         <input v-model="apartment.service_address" type="text" name="apartments[][service_address]"
@@ -670,6 +677,7 @@
                 logins: [],
                 apartment: {
                     service_address: '',
+                    service_primary: '',
                     service_city: '',
                     service_state: '',
                     service_fax: '',

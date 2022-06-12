@@ -78,7 +78,9 @@ class RemarkController extends BaseController
      */
     public function update(Request $request, Remark $remark)
     {
-        //
+        $remark->remarks = $request->remarks;
+        $remark->save();
+        return $this->sendResponse($remark, 'Remarks Updated Successfully');
     }
 
     /**

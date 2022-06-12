@@ -652,6 +652,9 @@ import moment from 'moment';
       doctypes: [],
                 editmode: false,
                 errors: {},
+                remarksform: new Form({
+                    remarks:'',
+                }),
                 docform: new Form({
                     id : '',
                     file_name : [],
@@ -731,8 +734,8 @@ import moment from 'moment';
         methods: {
             updateRemarks(e,id){
                 this.$Progress.start();
-              this.form.remarks = e.target.innerHTML;
-              this.form.put('api/remarks/'+id)
+              this.remarksform.remarks = e.target.innerHTML;
+              this.remarksform.put('api/remarks/'+id)
               .then((response) => {
                   // success
                   $('#addNew').modal('hide');
