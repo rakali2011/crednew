@@ -32,11 +32,11 @@ $path="";
 
         <div class="leftmenu" >
             <ul>
-                <li><a href="?t=trainging_chap1" >Training Chapter1</a></li>
-                <li><a href="?t=trainging_chap2" >Training Chapter2</a></li>
-                <li><a href="?t=trainging_chap3" >Training Chapter3</a></li>
-                <li><a href="?t=trainging_chap4" >Training Chapter4</a></li>
-                <li><a href="index.php?logout=yes" >Logout</a></li>
+                <li><a href="?t=trainging_chap1" >Chapter1</a></li>
+                <li><a href="?t=trainging_chap2" >Chapter2</a></li>
+                <li><a href="?t=trainging_chap3" >Chapter3</a></li>
+                <li><a href="?t=trainging_chap4" >Chapter4</a></li>
+                <!-- <li><a href="index.php?logout=yes" >Logout</a></li> -->
             </ul>
         </div>
         <?php if(isset($_GET['t'])){
