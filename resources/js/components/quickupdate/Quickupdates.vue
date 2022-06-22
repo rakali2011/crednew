@@ -75,16 +75,21 @@
                                             <option value="approved">Approved</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-sm-3">
+                                    <div class="form-group col-sm-2">
                                         <label>Effective Date</label>
                                         <input v-model="apartment.appeffective_date" type="date"
-                                               name="apartments[][appeffective_date]" class="form-control" placeholder="appeffective_date">
+                                               name="apartments[][appeffective_date]" class="form-control" placeholder="appeffective date">
                                     </div>
 
-                                    <div class="form-group col-sm-3">
+                                    <div class="form-group col-sm-2">
                                         <label>Provider Identifier</label>
                                         <input v-model="apartment.provider_identifier" type="text"
                                                name="apartments[][provider_identifier]" class="form-control" placeholder="Provider Identifier">
+                                    </div>
+                                    <div class="form-group col-sm-2">
+                                        <label>Initiated Date</label>
+                                        <input v-model="apartment.appinitiated_date" type="date"
+                                               name="apartments[][appinitiated_date]" class="form-control" placeholder="Initiated Date">
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label>Remarks</label>
@@ -152,6 +157,7 @@ import { VueGoodTable } from 'vue-good-table';
                         provider_identifier: [],
                         status: [],
                         effective_date: [],
+                        initiated_date: [],
                         remarks: [],
                     }),
                     
@@ -160,6 +166,7 @@ import { VueGoodTable } from 'vue-good-table';
                         appeffective_date:'',
                         app_name:'',
                         provider_identifier: '',
+                        appinitiated_date: '',
                         app_remarks: ''
                     },
                     apartments: [],

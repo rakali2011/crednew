@@ -25,7 +25,7 @@
             <td style="background-color: #add8e6; color: #003eff; width:120px;"><strong>Effective Date</strong></td>
             <td style="background-color: #add8e6; color: #003eff; width:120px;"><strong>Status</strong></td>
             <td style="background-color: #add8e6; color: #003eff; width:120px;"><strong>Provider ID</strong></td>
-            <td colspan="3" style="background-color: #add8e6; color: #003eff; width:200px;"><strong>Comments</strong></td>
+            <td style="background-color: #add8e6; color: #003eff; width:200px;"><strong>Comments</strong></td>
         </tr>
         @foreach($provider->payers as $payer)
             @php
@@ -40,11 +40,14 @@
         @endforeach
         <tr>
             <td style="background-color: #add8e6"><strong>{{$payer->name}}</strong></td>
-            <td style="background-color: #add8e6"><strong>{{isset($payer->appstatuschanges[0]->status_change_date)? $payer->appstatuschanges[0]->status_change_date:"NA"}}</strong></td>
+            <!-- <td style="background-color: #add8e6"><strong>{{isset($payer->appstatuschanges[0]->status_change_date)? $payer->appstatuschanges[0]->status_change_date:"NA"}}</strong></td> -->
+            <td style="background-color: #add8e6"><strong>{{isset($payer->pivot->initiated_date)? $payer->pivot->initiated_date: "NA"}}</strong></td>
             <td style="background-color: #add8e6"><strong>{{isset($payer->pivot->effective_date)? $payer->pivot->effective_date: "NA"}}</strong></td>
             <td style="background-color: #add8e6"><strong>{{$payer->pivot->status}}</strong></td>
             <td style="background-color: #add8e6"><strong>{{$payer->pivot->provider_identifier}}</strong></td>
-            <td colspan="3" style="background-color: #add8e6"><strong>{{$allremarks}}</strong></td>
+            @foreach($payer->remarks as $remark)
+            <td style="background-color: #add8e6"><strong>{{$remark->remarks}}</strong></td>
+            @endforeach
         </tr>
         @endforeach
     </tbody>

@@ -32,7 +32,8 @@ class QuickupdateController extends BaseController
         $data = json_decode($request->applications);
         foreach($data as $app) {
             $effective_date = $app->appeffective_date ? date('Y-m-d', strtotime($app->appeffective_date)):NULL;
-      $payer_id_array[$app->app_name] = ['status' => $app->appstatus, 'effective_date' => $effective_date, 'provider_identifier' => $app->provider_identifier];
+            $initiated_date = $app->appinitiated_date ? date('Y-m-d', strtotime($app->appinitiated_date)):NULL;
+      $payer_id_array[$app->app_name] = ['status' => $app->appstatus, 'effective_date' => $effective_date, 'initiated_date' => $initiated_date, 'provider_identifier' => $app->provider_identifier];
       if (!empty($app->app_remarks)) {
                     $remark = new Remark;
                     $remark->provider_id = $request->provider_id;

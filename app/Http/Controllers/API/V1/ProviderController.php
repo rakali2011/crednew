@@ -155,8 +155,8 @@ class ProviderController extends BaseController
 //        dd($provider);
         $selected_payers = $provider->payers()->get();
         foreach($selected_payers as $app){
-//            dd($app->pivot->provider_identifier);
-            $applications[] = ['app_name'=>$app->pivot->payer_id, 'appstatus' => $app->pivot->status, 'appeffective_date' => $app->pivot->effective_date, 'provider_identifier' => $app->pivot->provider_identifier];
+        //    dd($app->pivot->initiated_date);
+            $applications[] = ['app_name'=>$app->pivot->payer_id, 'appstatus' => $app->pivot->status, 'appeffective_date' => $app->pivot->effective_date, 'appinitiated_date' => $app->pivot->initiated_date, 'provider_identifier' => $app->pivot->provider_identifier];
         }
 //        dd($selected_payers);
         return $this->sendResponse($applications, 'Selected payer list');
