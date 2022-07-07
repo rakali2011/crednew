@@ -18,8 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/training', function () {
-    dd("Page not found");
-    // return view('training/lecture');
+    // dd("Page not found");
+    return view('training/lecture');
 });
 
 Auth::routes(['verify' => true,'register' => false]);
