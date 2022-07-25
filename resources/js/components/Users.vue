@@ -39,7 +39,7 @@
                       <td class="text-capitalize">{{user.name}}</td>
                       <td>{{user.email}}</td>
                       <!-- <td :inner-html.prop="user.email_verified_at | yesno"></td> -->
-                      <td>{{user.created_at}}</td>
+                      <td>{{user.created_at  | usDate}}</td>
 
                       <td>
 
