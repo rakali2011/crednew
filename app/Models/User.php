@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Role;
+use App\Models\Practice;
 
 class User extends Authenticatable // implements MustVerifyEmail
 {
@@ -73,5 +74,8 @@ class User extends Authenticatable // implements MustVerifyEmail
     public function isUser()
     {
         return $this->roles()->where('name', 'User')->exists();
+    }
+    public function assigned_practices() {
+        return $this->belongsToMany(Practice::class,'practice_user','user_id','practice_id');
     }
 }

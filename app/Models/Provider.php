@@ -25,4 +25,7 @@ protected $table = "providers";
     public function logins() {
         return $this->hasMany(Login::class);
     }
+    public function assigned_users() {
+        return $this->belongsToMany('App\Models\User');
+    }
 }
