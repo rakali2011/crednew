@@ -32,7 +32,7 @@ class UserController extends BaseController
         }
         // $this->authorize('isAdmin');
 
-        $users = User::latest()->paginate(10);
+        $users = User::latest()->paginate(10)->load("assigned_practices");
 
         return $this->sendResponse($users, 'Users list');
     }
@@ -77,6 +77,18 @@ class UserController extends BaseController
         }
 
         $user->update($request->all());
+
+        return $this->sendResponse($user, 'User Information has been updated');
+    }
+    public function assignPractices($id)
+    {
+        $user = User::findOrFail($id);
+
+        if (!empty($request->password)) {
+            $request->merge(['password' => Hash::make($request['password'])]);
+        }
+
+        // $user->update($request->all());
 
         return $this->sendResponse($user, 'User Information has been updated');
     }

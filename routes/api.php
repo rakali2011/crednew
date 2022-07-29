@@ -46,6 +46,7 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
     Route::post('product/upload', 'ProductController@upload');
     Route::post('quickupdate-form-submit', 'QuickupdateController@update');
     Route::get('getRemarks', 'RemarkController@all');
+    Route::post('assignPractices', 'UserController@assignPractices');
     
     Route::apiResources([
         'user' => 'UserController',

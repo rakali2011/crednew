@@ -47,6 +47,10 @@
                             <i class="fa fa-edit blue"></i>
                         </a>
                         /
+                        <a href="#" @click="assignModal(user)">
+                            <i class="fas fa-list blue"></i>
+                        </a>
+                        /
                         <a href="#" @click="deleteUser(user.id)">
                             <i class="fa fa-trash red"></i>
                         </a>
@@ -124,15 +128,64 @@
                 </div>
             </div>
         </div>
+        <!-- Assign Modal -->
+        <div class="modal fade" id="assignNew" tabindex="-1" role="dialog" aria-labelledby="assignNew" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" v-show="!editmode">Create New User</h5>
+                    <h5 class="modal-title" v-show="editmode">Update User's Practice Assignment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- <form @submit.prevent="createUser"> -->
+
+                <form @submit.prevent="editmode ? updatePracticeUser() : createUser()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input v-model="practiceForm.name" type="text" readonly name="name"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
+                            <has-error :form="form" field="name"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input v-model="practiceForm.email" type="text" readonly name="email"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                            <has-error :form="form" field="email"></has-error>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group input-group input-group-sm">
+                                <span class="input-group input-group-sm">Assign Practice</span>
+                                <multiselect v-model="practiceForm.selected_practices" :multiple="true" :options="practices.map(prac => prac.id)" :custom-label="opt => practices.find(x => x.id == opt).practice_name" placeholder="Assign Practice">
+                                <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length >3 &amp;&amp; !isOpen">{{ values.length }} practices selected</span></template>
+                                </multiselect>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button v-show="editmode" type="submit" class="btn btn-success">Update</button>
+                        <button v-show="!editmode" type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
     </div>
   </section>
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect'
     export default {
+        components: { Multiselect },
         data () {
             return {
                 editmode: false,
+                practices: [],
                 users : {},
                 form: new Form({
                     id : '',
@@ -141,6 +194,12 @@
                     email: '',
                     password: '',
                     email_verified_at: '',
+                }),
+                practiceForm: new Form({
+                    id : '',
+                    name: '',
+                    email: '',
+                    selected_practices: [],
                 })
             }
         },
@@ -175,11 +234,40 @@
                 });
 
             },
+            updatePracticeUser(){
+                this.$Progress.start();
+                // console.log('Editing data');
+                this.practiceForm.post('api/assignPractices/'+this.practiceForm.id)
+                .then((response) => {
+                    // success
+                    $('#assignNew').modal('hide');
+                    Toast.fire({
+                      icon: 'success',
+                      title: response.data.message
+                    });
+                    this.$Progress.finish();
+                        //  Fire.$emit('AfterCreate');
+
+                    this.loadUsers();
+                })
+                .catch(() => {
+                    this.$Progress.fail();
+                });
+
+            },
             editModal(user){
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
                 this.form.fill(user);
+            },
+            assignModal(user){
+                console.log(user);
+                this.editmode = true;
+                this.practiceForm.reset();
+                $('#assignNew').modal('show');
+                this.practiceForm.fill(user);
+                this.practiceForm.selected_practices=user.assigned_practices.map(prac=>prac.id);
             },
             newModal(){
                 this.editmode = false;
@@ -216,12 +304,17 @@
             this.$Progress.start();
 
             if(this.$gate.isAdmin()){
-              axios.get("api/user").then(({ data }) => (this.users = data.data));
+              axios.get("api/user").then(({ data }) => (this.users = data));
             }
 
             this.$Progress.finish();
           },
-          
+          loadPractices: function () {
+                axios.get('api/practice/listing').then(function (res) {
+                console.log(res.data.data);
+                    this.practices = res.data.data;
+                }.bind(this));
+            },
           createUser(){
 
               this.form.post('api/user')
@@ -254,6 +347,7 @@
 
             this.$Progress.start();
             this.loadUsers();
+            this.loadPractices();
             this.$Progress.finish();
         }
     }
