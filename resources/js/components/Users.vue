@@ -191,7 +191,7 @@ import Multiselect from 'vue-multiselect'
             return {
                 editmode: false,
                 practices: [],
-                users : {},
+                users : [],
                 form: new Form({
                     id : '',
                     type : '',
