@@ -307,7 +307,7 @@ import Multiselect from 'vue-multiselect'
             },
           loadUsers(){
             this.$Progress.start();
-
+console.log("Test");
             if(this.$gate.isAdmin()){
               axios.get("api/user").then(({ data }) => (this.users = data));
             }
