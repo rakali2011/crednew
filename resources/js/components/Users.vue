@@ -159,7 +159,7 @@
                         <div class="col-sm-12">
                             <div class="form-group input-group input-group-sm">
                                 <span class="input-group input-group-sm">Assign Practice</span>
-                                <multiselect v-model="practiceForm.selected_practices" :multiple="true" :options="practices.map(prac => prac.id)" :custom-label="opt => practices.find(x => x.id == opt).practice_name" placeholder="Assign Practice">
+                                <multiselect v-model="practiceForm.selected_practices" :multiple="true" :max-height="200" :options="practices.map(prac => prac.id)" :custom-label="opt => practices.find(x => x.id == opt).practice_name" placeholder="Assign Practice">
                                 <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length >3 &amp;&amp; !isOpen">{{ values.length }} practices selected</span></template>
                                 </multiselect>
                             </div>
@@ -177,7 +177,12 @@
     </div>
   </section>
 </template>
-
+<style >
+.multiselect__content-wrapper {
+position: static;
+overflow: visible;
+}
+</style>
 <script>
 import Multiselect from 'vue-multiselect'
     export default {
@@ -237,7 +242,7 @@ import Multiselect from 'vue-multiselect'
             updatePracticeUser(){
                 this.$Progress.start();
                 // console.log('Editing data');
-                this.practiceForm.post('api/assignPractices/'+this.practiceForm.id)
+                this.practiceForm.post('api/assignPractices/')
                 .then((response) => {
                     // success
                     $('#assignNew').modal('hide');

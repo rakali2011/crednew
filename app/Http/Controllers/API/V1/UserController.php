@@ -6,7 +6,7 @@ use App\Http\Requests\Users\UserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Http\Request;
 
 class UserController extends BaseController
 {
@@ -80,15 +80,16 @@ class UserController extends BaseController
 
         return $this->sendResponse($user, 'User Information has been updated');
     }
-    public function assignPractices($id)
+    public function assignPractices(Request $request)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($request->id);
 
-        if (!empty($request->password)) {
-            $request->merge(['password' => Hash::make($request['password'])]);
-        }
+        $user->assigned_practices()->sync($request->selected_practices, TRUE);
+        // if (!empty($request->password)) {
+        //     $request->merge(['password' => Hash::make($request['password'])]);
+        // }
 
-        // $user->update($request->all());
+        // // $user->update($request->all());
 
         return $this->sendResponse($user, 'User Information has been updated');
     }
