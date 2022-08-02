@@ -242,7 +242,7 @@ import Multiselect from 'vue-multiselect'
             updatePracticeUser(){
                 this.$Progress.start();
                 // console.log('Editing data');
-                this.practiceForm.post('api/assignPractices/')
+                this.practiceForm.post('api/assignPractices')
                 .then((response) => {
                     // success
                     $('#assignNew').modal('hide');
