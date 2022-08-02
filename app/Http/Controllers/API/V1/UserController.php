@@ -83,7 +83,7 @@ class UserController extends BaseController
     public function assignPractices(Request $request)
     {
         $user = User::findOrFail($request->id);
-
+dd($user);
         $user->assigned_practices()->sync($request->selected_practices, TRUE);
         // if (!empty($request->password)) {
         //     $request->merge(['password' => Hash::make($request['password'])]);
