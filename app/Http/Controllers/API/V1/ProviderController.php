@@ -28,7 +28,7 @@ class ProviderController extends BaseController
      */
     public function index()
     {
-        $providers = $this->provider->latest()->paginate()->load("practices")->load("payers")->load("documents")->load("logins");
+        $providers = $this->provider->latest()->paginate(100)->load("practices")->load("payers")->load("documents")->load("logins");
         return $this->sendResponse($providers, 'Provider list');
     }
 
