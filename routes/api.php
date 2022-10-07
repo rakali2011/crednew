@@ -61,5 +61,6 @@ Route::namespace('App\\Http\\Controllers\\API\V1')->group(function () {
         'payer' => 'PayerController',
         'category' => 'CategoryController',
         'tag' => 'TagController',
+        'team' => 'TeamController',
     ]);
 });

@@ -32,7 +32,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                     <tr v-for="user in users.data" :key="user.id">
+                     <tr v-for="user in teams.data" :key="user.id">
 
                       <!-- <td>{{user.id}}</td> -->
                       <!-- <td class="text-capitalize">{{user.type}}</td> -->
@@ -61,7 +61,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                  <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                  <pagination :data="teams" @pagination-change-page="getResults"></pagination>
               </div>
             </div>
             <!-- /.card -->
@@ -191,7 +191,7 @@ import Multiselect from 'vue-multiselect'
             return {
                 editmode: false,
                 practices: [],
-                users : [],
+                teams : [],
                 form: new Form({
                     id : '',
                     type : '',
@@ -214,7 +214,7 @@ import Multiselect from 'vue-multiselect'
 
                   this.$Progress.start();
                   
-                  axios.get('api/user?page=' + page).then(({ data }) => (this.users = data.data));
+                  axios.get('api/user?page=' + page).then(({ data }) => (this.teams = data.data));
 
                   this.$Progress.finish();
             },
@@ -232,7 +232,7 @@ import Multiselect from 'vue-multiselect'
                     this.$Progress.finish();
                         //  Fire.$emit('AfterCreate');
 
-                    this.loadUsers();
+                    this.loadTeams();
                 })
                 .catch(() => {
                     this.$Progress.fail();
@@ -253,7 +253,7 @@ import Multiselect from 'vue-multiselect'
                     this.$Progress.finish();
                         //  Fire.$emit('AfterCreate');
 
-                    this.loadUsers();
+                    this.loadTeams();
                 })
                 .catch(() => {
                     this.$Progress.fail();
@@ -298,18 +298,18 @@ import Multiselect from 'vue-multiselect'
                                         'success'
                                         );
                                     // Fire.$emit('AfterCreate');
-                                    this.loadUsers();
+                                    this.loadTeams();
                                 }).catch((data)=> {
                                   Swal.fire("Failed!", data.message, "warning");
                               });
                          }
                     })
             },
-          loadUsers(){
+          loadTeams(){
             this.$Progress.start();
 console.log("Test");
             if(this.$gate.isAdmin()){
-              axios.get("api/user").then(({ data }) => (this.users = data));
+              axios.get("api/team").then(({ data }) => (this.teams = data));
             }
 
             this.$Progress.finish();
@@ -332,7 +332,7 @@ console.log("Test");
                   });
 
                   this.$Progress.finish();
-                  this.loadUsers();
+                  this.loadTeams();
 
               })
               .catch(()=>{
@@ -351,7 +351,7 @@ console.log("Test");
         created() {
 
             this.$Progress.start();
-            this.loadUsers();
+            this.loadTeams();
             this.loadPractices();
             this.$Progress.finish();
         }

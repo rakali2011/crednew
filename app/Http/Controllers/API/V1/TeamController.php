@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
-class TeamController extends Controller
+class TeamController extends BaseController
 {
     /**
      * Create a new controller instance.
@@ -24,7 +26,14 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
+        if (!Gate::allows('isAdmin')) {
+            return $this->unauthorizedResponse();
+        }
+        // $this->authorize('isAdmin');
+
+        $teams = Team::latest()->paginate(10);
+
+        return $this->sendResponse($teams, 'Teams list');
     }
 
     /**
