@@ -112,6 +112,15 @@
           </router-link>
         </li>
       @endcan
+      
+      @can('isAdmin')
+      <li class="nav-item">
+          <router-link to="/teams" class="nav-link">
+            <i class="fa fa-users nav-icon blue"></i>
+            <p>Teams</p>
+          </router-link>
+        </li>
+      @endcan
 
       
 

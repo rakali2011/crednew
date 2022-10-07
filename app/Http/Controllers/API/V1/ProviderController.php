@@ -240,6 +240,7 @@ class ProviderController extends BaseController
                 );
             $apps = $pro->payers()->get();
             foreach ($apps as $payer) {
+                if($payer->pivot->status=="")continue;
                     $status_detail[$payer->pivot->status] = $status_detail[$payer->pivot->status] + 1;
                 }
                 
