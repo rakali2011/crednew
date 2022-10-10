@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Team extends Model
 {
     use HasFactory, SoftDeletes;
-    protected  $table = "practices";
+    protected  $table = "teams";
+    protected $guarded = ['id'];
 
     public function users() {
         return $this->belongsToMany('App\User');

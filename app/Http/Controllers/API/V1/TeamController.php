@@ -10,14 +10,16 @@ use Illuminate\Http\Request;
 
 class TeamController extends BaseController
 {
+    protected $team = '';
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Team $team)
     {
         $this->middleware('auth:api');
+        $this->team = $team;
     }
     /**
      * Display a listing of the resource.
@@ -29,10 +31,8 @@ class TeamController extends BaseController
         if (!Gate::allows('isAdmin')) {
             return $this->unauthorizedResponse();
         }
-        // $this->authorize('isAdmin');
-
-        $teams = Team::latest()->paginate(10);
-
+        $teams = $this->team->latest()->paginate(10);
+// dd($teams);
         return $this->sendResponse($teams, 'Teams list');
     }
 
@@ -52,9 +52,13 @@ class TeamController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
     {
-        //
+        $team = $this->team->create([
+            'name' => strtoupper($request->get('name')),
+        ]);
+        return $this->sendResponse($team, 'Team Created Successfully');
     }
 
     /**

@@ -23,6 +23,7 @@
                   :key="componentKey"
                   :columns="columns"
                   :rows="rows"
+                  :fixed-header="true"
                   :pagination-options="{
                     enabled: true
                   }"
