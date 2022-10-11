@@ -19,7 +19,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
-                  <vue-good-table
+                  <vue-good-table ref="table"
                     :key="componentKey"
                     :columns="columns"
                     :rows="rows"
@@ -148,6 +148,7 @@
                           title: data.message
                       });
                     this.$Progress.finish();
+                    this.loadTeams();
                     this.forceRerender();
                   } else {
                     Toast.fire({
@@ -167,7 +168,7 @@
             },
             updateTeam(){
                 this.$Progress.start();
-                this.form.put('api/payer/'+this.form.id)
+                this.form.put('api/team/'+this.form.id)
                 .then((response) => {
                     // success
                     $('#addNew').modal('hide');
@@ -177,7 +178,7 @@
                     });
                     this.$Progress.finish();
                         //  Fire.$emit('AfterCreate');
-                    this.loadPractices();
+                    this.loadTeams();
                 })
                 .catch(() => {
                     this.$Progress.fail();

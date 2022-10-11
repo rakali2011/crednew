@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
@@ -92,7 +93,12 @@ class TeamController extends BaseController
      */
     public function update(Request $request, Team $team)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => ['required', 'max:255', Rule::unique('teams')->ignore($team->id)],
+        ]);
+        $validatedData['name'] = strtoupper($validatedData['name']);
+        $team->update(['name' => $validatedData['name']]);
+        return $this->sendResponse($team, 'Team Information has been updated');
     }
 
     /**
