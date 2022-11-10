@@ -74,6 +74,14 @@
                                       </div>
                                   </div>
                               </div>
+                              <div class="col-sm-12">
+                                <div class="form-group input-group input-group-sm">
+                                    <span class="input-group input-group-sm">Assign Users</span>
+                                    <multiselect v-model="form.selected_users" :multiple="true" :max-height="200" :options="users.map(user => user.id)" :custom-label="opt => users.find(x => x.id == opt).user_name" placeholder="Assign User">
+                                    <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length >3 &amp;&amp; !isOpen">{{ values.length }} users selected</span></template>
+                                    </multiselect>
+                                </div>
+                              </div>
                               <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                   <button v-show="editmode" type="submit" class="btn btn-success">Update</button>
@@ -88,9 +96,9 @@
   </template>
   <script>
   import { VueGoodTable } from 'vue-good-table';
-  
+  import Multiselect from 'vue-multiselect'
       export default {
-          components: { VueGoodTable},
+          components: { VueGoodTable,Multiselect},
           data () {
               return {
         columns: [
@@ -111,11 +119,13 @@
             field: 'action',
           },
         ],
+        users : [],
         rows: [],
                   editmode: false,
                   form: new Form({
                       id : '',
                       name : '',
+                      selected_users: [],
                   }),
                   componentKey: 0,
                   testdata:'aaa',
@@ -185,6 +195,13 @@
                 });
   
             },
+            
+          loadUsers: function () {
+                  axios.get('api/user').then(function (res) {
+                    console.log(res);
+                      this.users = res.data.data.data;
+                  }.bind(this));
+              },
             loadTeams: function () {
                   axios.get('api/team').then(function (res) {
                     console.log(res);
@@ -193,7 +210,8 @@
               },
           },
           created: function () {
-             this.loadTeams()
+             this.loadTeams();
+             this.loadUsers();
               
           }
       }

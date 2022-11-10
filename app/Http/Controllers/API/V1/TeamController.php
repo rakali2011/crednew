@@ -32,7 +32,7 @@ class TeamController extends BaseController
         if (!Gate::allows('isAdmin')) {
             return $this->unauthorizedResponse();
         }
-        $teams = $this->team->latest()->paginate(10);
+        $teams = $this->team->latest()->paginate(10)->load("assigned_users");;
 // dd($teams);
         return $this->sendResponse($teams, 'Teams list');
     }
