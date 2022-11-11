@@ -33,7 +33,7 @@ class TeamController extends BaseController
             return $this->unauthorizedResponse();
         }
         $teams = $this->team->latest()->paginate(10)->load("assigned_users");;
-// dd($teams);
+        // dd($teams);
         return $this->sendResponse($teams, 'Teams list');
     }
 
@@ -53,7 +53,7 @@ class TeamController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
+
     public function store(Request $request)
     {
         $team = $this->team->create([
@@ -98,7 +98,8 @@ class TeamController extends BaseController
         ]);
         $validatedData['name'] = strtoupper($validatedData['name']);
         $team->update(['name' => $validatedData['name']]);
-        return $this->sendResponse($team, 'Team Information has been updated');
+        $team->assigned_users()->sync($request->selected_users, TRUE);
+        return $this->sendResponse($request, 'Team Information has been updated');
     }
 
     /**

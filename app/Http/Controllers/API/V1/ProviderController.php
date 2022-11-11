@@ -6,6 +6,8 @@ use App\Http\Requests\Providers\ProviderRequest;
 use App\Models\Provider;
 use App\Models\Login;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class ProviderController extends BaseController
 {
@@ -20,7 +22,7 @@ class ProviderController extends BaseController
         $this->middleware('auth:api');
         $this->provider = $provider;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +30,11 @@ class ProviderController extends BaseController
      */
     public function index()
     {
-        $providers = $this->provider->latest()->paginate(500)->load("practices")->load("payers")->load("documents")->load("logins");
+        if (!Gate::allows('isAdmin')) {
+            $this->providers = Auth::user()->assigned_practices();
+            $providers = $this->provider->latest()->paginate(500)->load("practices")->load("payers")->load("documents")->load("logins");
+        } else
+            $providers = $this->provider->latest()->paginate(500)->load("practices")->load("payers")->load("documents")->load("logins");
         return $this->sendResponse($providers, 'Provider list');
     }
 
@@ -42,7 +48,7 @@ class ProviderController extends BaseController
         //
     }
 
-        /**
+    /**
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\Practices\PracticeRequest  $request
@@ -54,8 +60,8 @@ class ProviderController extends BaseController
 
             'individual_npi' => 'required|unique:providers,individual_npi,NULL,id,deleted_at,NULL',
         ]);
-//        $validatedData = $request->validated();
-        
+        //        $validatedData = $request->validated();
+
         $provider = $this->provider->create([
             'individual_npi' => $request->get('individual_npi'),
             'full_name' => $request->get('full_name'),
@@ -71,12 +77,12 @@ class ProviderController extends BaseController
             'home_state' => $request->get('home_state'),
             'home_county' => $request->get('home_county'),
             'home_zip' => $request->get('home_zip'),
-//            'mailing_street' => $request->get('mailing_street'),
-//            'mailing_suite' => $request->get('mailing_suite'),
-//            'mailing_city' => $request->get('mailing_city'),
-//            'mailing_state' => $request->get('mailing_state'),
-//            'mailing_county' => $request->get('mailing_county'),
-//            'mailing_zip' => $request->get('mailing_zip'),
+            //            'mailing_street' => $request->get('mailing_street'),
+            //            'mailing_suite' => $request->get('mailing_suite'),
+            //            'mailing_city' => $request->get('mailing_city'),
+            //            'mailing_state' => $request->get('mailing_state'),
+            //            'mailing_county' => $request->get('mailing_county'),
+            //            'mailing_zip' => $request->get('mailing_zip'),
             'cell' => $request->get('cell'),
             'gender' => $request->get('gender'),
             'birth_county' => $request->get('birth_county'),
@@ -84,7 +90,7 @@ class ProviderController extends BaseController
             'email' => $request->get('email'),
             'dob' => $request->get('dob'),
             'password' => $request->get('password'),
-//            'rail_road_group' => $request->get('rail_road_group'),
+            //            'rail_road_group' => $request->get('rail_road_group'),
             'ptan' => $request->get('ptan'),
             'caqh_user' => $request->get('caqh_user'),
             'caqh_pass' => $request->get('caqh_pass'),
@@ -95,8 +101,8 @@ class ProviderController extends BaseController
             'manager_email' => $request->get('manager_email'),
             'manager_contact' => $request->get('manager_contact'),
             'medicaid_id' => $request->get('medicaid_id'),
-//            'grp_madicaid_id' => $request->get('grp_madicaid_id'),
-//            'grp_mrc_id' => $request->get('grp_mrc_id'),
+            //            'grp_madicaid_id' => $request->get('grp_madicaid_id'),
+            //            'grp_mrc_id' => $request->get('grp_mrc_id'),
             'medicaid_user' => $request->get('medicaid_user'),
             'medicare_id' => $request->get('medicare_id'),
             'website' => $request->get('website'),
@@ -124,10 +130,10 @@ class ProviderController extends BaseController
 
         if (($request->get('web_portals'))) {
             foreach ($request->get('web_portals') as $key => $portal) {
-                if($portal["loginweb"]=="" && $portal["loginuser"]==""){
+                if ($portal["loginweb"] == "" && $portal["loginuser"] == "") {
                     continue;
                 }
-                
+
                 $login = new Login;
                 $login->provider_id = $provider->id;
                 $login->loginweb = $portal["loginweb"];
@@ -152,21 +158,21 @@ class ProviderController extends BaseController
     {
         $applications = array();
         $provider = $this->provider->findOrFail($id);
-//        dd($provider);
+        //        dd($provider);
         $selected_payers = $provider->payers()->get();
-        foreach($selected_payers as $app){
-        //    dd($app->pivot->initiated_date);
-            $applications[] = ['app_name'=>$app->pivot->payer_id, 'appstatus' => $app->pivot->status, 'appeffective_date' => $app->pivot->effective_date, 'appinitiated_date' => $app->pivot->initiated_date, 'provider_identifier' => $app->pivot->provider_identifier];
+        foreach ($selected_payers as $app) {
+            //    dd($app->pivot->initiated_date);
+            $applications[] = ['app_name' => $app->pivot->payer_id, 'appstatus' => $app->pivot->status, 'appeffective_date' => $app->pivot->effective_date, 'appinitiated_date' => $app->pivot->initiated_date, 'provider_identifier' => $app->pivot->provider_identifier];
         }
-//        dd($selected_payers);
+        //        dd($selected_payers);
         return $this->sendResponse($applications, 'Selected payer list');
     }
     public function payers($id)
     {
         $provider = $this->provider->findOrFail($id);
         $selected_payers = $provider->payers()->get();
-        
-//        dd($selected_payers);
+
+        //        dd($selected_payers);
         return $this->sendResponse($selected_payers, 'Selected payer list');
     }
 
@@ -181,7 +187,7 @@ class ProviderController extends BaseController
         //
     }
 
-        /**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -191,24 +197,24 @@ class ProviderController extends BaseController
     public function update(ProviderRequest $request, $id)
     {
         $request->validate([
-            'individual_npi' => 'required|unique:providers,individual_npi,'. $id.',id,deleted_at,NULL',
+            'individual_npi' => 'required|unique:providers,individual_npi,' . $id . ',id,deleted_at,NULL',
         ]);
 
         $practices = $request->get('selected_practices');
 
         $provider = $this->provider->findOrFail($id);
-        
-        $provider->update($request->except('selected_practices','id','web_portals'));
-        
+
+        $provider->update($request->except('selected_practices', 'id', 'web_portals'));
+
         $provider->practices()->sync($practices, TRUE);
 
         $provider->logins()->delete();
         if (($request->get('web_portals'))) {
             foreach ($request->get('web_portals') as $key => $portal) {
-                if($portal["loginweb"]=="" && $portal["loginuser"]==""){
+                if ($portal["loginweb"] == "" && $portal["loginuser"] == "") {
                     continue;
                 }
-                
+
                 $login = new Login;
                 $login->provider_id = $provider->id;
                 $login->loginweb = $portal["loginweb"];
@@ -222,44 +228,44 @@ class ProviderController extends BaseController
 
         return $this->sendResponse($provider, 'Provider Information has been updated');
     }
-    public function allProvidersStatus(Request $request){
-        
+    public function allProvidersStatus(Request $request)
+    {
+
         $providers = $this->provider->get();
-        foreach ($providers as $pro){
+        foreach ($providers as $pro) {
             $status_detail = array(
-                    'participating' => 0,
-                    'non-participating' => 0,
-                    'in-process' => 0,
-                    'pending-prg' => 0,
-                    'pending-provider' => 0,
-                    'rejected' => 0,
-                    'not-eligible' => 0,
-                    'panel-closed' => 0,
-                    'approved' => 0,
-                    'new' => 0,
-                );
+                'participating' => 0,
+                'non-participating' => 0,
+                'in-process' => 0,
+                'pending-prg' => 0,
+                'pending-provider' => 0,
+                'rejected' => 0,
+                'not-eligible' => 0,
+                'panel-closed' => 0,
+                'approved' => 0,
+                'new' => 0,
+            );
             $apps = $pro->payers()->get();
             foreach ($apps as $payer) {
-                if($payer->pivot->status=="")continue;
-                    $status_detail[$payer->pivot->status] = $status_detail[$payer->pivot->status] + 1;
-                }
-                
-//            dd($pro->full_name);
-            $pro->name=$pro->full_name;
-            $pro->appstotal=$apps->count();
-            $pro->participating=$status_detail['participating'];
-            $pro->non_participating=$status_detail['non-participating'];
-            $pro->in_process=$status_detail['in-process'];
-            $pro->pending_prg=$status_detail['pending-prg'];
-            $pro->pending_provider=$status_detail['pending-provider'];
-            $pro->rejected=$status_detail['rejected'];
-            $pro->not_eligible=$status_detail['not-eligible'];
-            $pro->panel_closed=$status_detail['panel-closed'];
-            $pro->approved=$status_detail['approved'];
-            $pro->new=$status_detail['new'];
-            
+                if ($payer->pivot->status == "") continue;
+                $status_detail[$payer->pivot->status] = $status_detail[$payer->pivot->status] + 1;
+            }
+
+            //            dd($pro->full_name);
+            $pro->name = $pro->full_name;
+            $pro->appstotal = $apps->count();
+            $pro->participating = $status_detail['participating'];
+            $pro->non_participating = $status_detail['non-participating'];
+            $pro->in_process = $status_detail['in-process'];
+            $pro->pending_prg = $status_detail['pending-prg'];
+            $pro->pending_provider = $status_detail['pending-provider'];
+            $pro->rejected = $status_detail['rejected'];
+            $pro->not_eligible = $status_detail['not-eligible'];
+            $pro->panel_closed = $status_detail['panel-closed'];
+            $pro->approved = $status_detail['approved'];
+            $pro->new = $status_detail['new'];
         }
-//        dd($apps->count());
+        //        dd($apps->count());
         return $this->sendResponse($providers, 'Provider list');
     }
 
@@ -276,18 +282,19 @@ class ProviderController extends BaseController
         $provider->delete();
         return $this->sendResponse($provider, 'Provider has been Deleted');
     }
-    public function getProviderPayer($id) {
-        $payers=array();
-        $provider = Provider::with(['payers.remarks' => function($q) use ($id) {
-                        $q->where('provider_id', '=', $id)->orderBy('created_at', 'desc');
-                    }])
-                ->findOrFail($id);
-        
-        if($provider){
-            $payers = $provider->payers()->get(['payers.id','payers.name']);
+    public function getProviderPayer($id)
+    {
+        $payers = array();
+        $provider = Provider::with(['payers.remarks' => function ($q) use ($id) {
+            $q->where('provider_id', '=', $id)->orderBy('created_at', 'desc');
+        }])
+            ->findOrFail($id);
+
+        if ($provider) {
+            $payers = $provider->payers()->get(['payers.id', 'payers.name']);
         }
-        $provider->dob = $provider->dob ? date('m/d/Y', strtotime($provider->dob)):'';
-        
-        return compact('payers','provider');
+        $provider->dob = $provider->dob ? date('m/d/Y', strtotime($provider->dob)) : '';
+
+        return compact('payers', 'provider');
     }
 }

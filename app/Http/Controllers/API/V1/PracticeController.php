@@ -6,8 +6,11 @@ use App\Http\Requests\Practices\PracticeRequest;
 use App\Models\Practice;
 use App\Models\Plocation;
 use App\Models\Plogin;
+use App\Models\User;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class PracticeController extends BaseController
 {
@@ -22,7 +25,7 @@ class PracticeController extends BaseController
         $this->middleware('auth:api');
         $this->practice = $practice;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -30,27 +33,31 @@ class PracticeController extends BaseController
      */
     public function index()
     {
-        $practices = $this->practice->latest()->get()->load("documents")->load("providers")->load("plocations")->load("plogins");
+        if (!Gate::allows('isAdmin')) {
+            $this->practice = Auth::user()->assigned_practices();
+            $practices = $this->practice->latest()->get()->load("documents")->load("providers")->load("plocations")->load("plogins");
+        } else
+            $practices = $this->practice->latest()->get()->load("documents")->load("providers")->load("plocations")->load("plogins");
         return $this->sendResponse($practices, 'Practice list');
     }
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function listing()
     {
-        $practices = $this->practice->select("practice_name","id")->get();
-//        $practices = $this->practice->pluck('practice_name', 'id');
+        $practices = $this->practice->select("practice_name", "id")->get();
+        //        $practices = $this->practice->pluck('practice_name', 'id');
 
         return $this->sendResponse($practices, 'Practice list');
     }
     public function getProviders($id)
     {
         $practice = $this->practice->findOrFail($id);
-        
+
         $providers = $practice->providers()->get();
-//        $practices = $this->practice->pluck('practice_name', 'id');
+        //        $practices = $this->practice->pluck('practice_name', 'id');
 
         return $this->sendResponse($providers, 'Providers list');
     }
@@ -65,7 +72,7 @@ class PracticeController extends BaseController
         //
     }
 
-        /**
+    /**
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\Practices\PracticeRequest  $request
@@ -120,10 +127,10 @@ class PracticeController extends BaseController
         $practice->plocations()->delete();
         if (($request->get('service_address'))) {
             foreach ($request->get('service_address') as $key => $address) {
-                if($address["service_address"]==""){
+                if ($address["service_address"] == "") {
                     continue;
                 }
-                
+
                 $plocation = new Plocation;
                 $plocation->practice_id = $practice->id;
                 $plocation->service_address = $address["service_address"];
@@ -133,8 +140,8 @@ class PracticeController extends BaseController
                 $plocation->service_fax = $address["service_fax"];
                 $plocation->service_phone = $address["service_phone"];
                 $plocation->service_state = $address["service_state"];
-                $plocation->service_zip =$address["service_zip"];
-                
+                $plocation->service_zip = $address["service_zip"];
+
                 $plocation->save();
             }
         }
@@ -164,7 +171,7 @@ class PracticeController extends BaseController
         //
     }
 
-        /**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -175,15 +182,15 @@ class PracticeController extends BaseController
     {
         $practice = $this->practice->findOrFail($id);
 
-        $practice->update($request->except('service_address','id'));
+        $practice->update($request->except('service_address', 'id'));
         // $practice->update($request->all());
         $practice->plocations()->delete();
         if (($request->get('service_address'))) {
             foreach ($request->get('service_address') as $key => $address) {
-                if($address["service_address"]==""){
+                if ($address["service_address"] == "") {
                     continue;
                 }
-                
+
                 $plocation = new Plocation;
                 $plocation->practice_id = $practice->id;
                 $plocation->service_address = $address["service_address"];
@@ -193,7 +200,7 @@ class PracticeController extends BaseController
                 $plocation->service_fax = $address["service_fax"];
                 $plocation->service_phone = $address["service_phone"];
                 $plocation->service_state = $address["service_state"];
-                $plocation->service_zip =$address["service_zip"];
+                $plocation->service_zip = $address["service_zip"];
                 // dd($plocation);
                 $plocation->save();
             }
@@ -201,10 +208,10 @@ class PracticeController extends BaseController
         $practice->plogins()->delete();
         if (($request->get('web_portals'))) {
             foreach ($request->get('web_portals') as $key => $portal) {
-                if($portal["loginweb"]=="" && $portal["loginuser"]==""){
+                if ($portal["loginweb"] == "" && $portal["loginuser"] == "") {
                     continue;
                 }
-                
+
                 $login = new Plogin;
                 $login->practice_id = $practice->id;
                 $login->loginweb = $portal["loginweb"];
@@ -231,15 +238,16 @@ class PracticeController extends BaseController
         $practice->delete();
         return $this->sendResponse($practice, 'Practice has been Deleted');
     }
-    public function getPracticeProvider($id) {
-        $providers=array();
-//        $practice = $this->practice->findOrFail($id);
+    public function getPracticeProvider($id)
+    {
+        $providers = array();
+        //        $practice = $this->practice->findOrFail($id);
         $practice = Practice::findOrFail($id);
-        
-        if($practice){
-            $providers = $practice->providers()->get(['providers.id','full_name','individual_npi']);
+
+        if ($practice) {
+            $providers = $practice->providers()->get(['providers.id', 'full_name', 'individual_npi']);
         }
-        
-        return compact('providers','practice');
+
+        return compact('providers', 'practice');
     }
 }
